@@ -1,0 +1,7 @@
+.main-navbar {
+    height: 4rem;
+}
+
+.main-content {
+    height: calc(100% - 4rem);
+}

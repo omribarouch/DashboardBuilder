@@ -4,7 +4,7 @@ import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import compression from 'compression';
 import cors from 'cors';
-import router from 'router';
+import router from './router';
 
 const app = express();
 
@@ -22,4 +22,4 @@ server.listen(8080, () => {
   console.log('Server running on http://localhost:8080/');
 });
 
-app.use('/api', router());
+app.use('/api', router);
