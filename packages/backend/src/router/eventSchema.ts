@@ -6,6 +6,7 @@ import {createEventSchema, deleteEventSchema, getAllEventSchemas} from "../contr
 const eventSchemaRouter = express.Router();
 
 eventSchemaRouter.get('/', isAuthenticated, getAllEventSchemas);
+eventSchemaRouter.get('/:id/breakdown/:schemaProperty', isAuthenticated, getAllEventSchemas);
 eventSchemaRouter.post('/', isAuthenticated, isAdmin, createEventSchema);
 eventSchemaRouter.delete('/:id', isAuthenticated, isAdmin, deleteEventSchema);
 

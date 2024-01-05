@@ -6,13 +6,14 @@ import {
 	getDashboards,
 	updateDashboard
 } from "../controllers/dashboard";
+import { isAuthenticated } from "../middlewares/auth";
 
 const dashboardRouter = express.Router();
 
-dashboardRouter.get('/', getDashboards);
-dashboardRouter.get('/:id', getDashboard);
-dashboardRouter.post('/', createDashboard);
-dashboardRouter.put('/:id', updateDashboard);
-dashboardRouter.delete('/:id', deleteDashboard);
+dashboardRouter.get('/', isAuthenticated, getDashboards);
+dashboardRouter.get('/:id', isAuthenticated, getDashboard);
+dashboardRouter.post('/', isAuthenticated, createDashboard);
+dashboardRouter.put('/:id', isAuthenticated, updateDashboard);
+dashboardRouter.delete('/:id', isAuthenticated, deleteDashboard);
 
 export default dashboardRouter;
