@@ -62,7 +62,7 @@ const EventSchemaCreator = () => {
                 </div>
             </div>
 
-            <button className='btn btn-primary'>Create Schema</button>
+            <button className='btn btn-primary' disabled={valid}>Create Schema</button>
         </>
     );
 };

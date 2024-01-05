@@ -4,31 +4,24 @@ import IEventSchema from "../models/interfaces/eventSchema";
 import IdentifiedRequest from "../models/interfaces/identifiedRequest";
 
 export const createEventSchema = async (req: Request, res: Response) => {
-    try {
-        const { name, baseSchema, uiSchema } = req.body;
-        const eventSchema = new EventSchemaModel({ name, baseSchema, uiSchema });
-        await eventSchema.save();
-        res.status(201).send(eventSchema);
-    } catch (error) {
-        res.sendStatus(400);
-    }
+    const { name, baseSchema, uiSchema } = req.body;
+    new EventSchemaModel({ name, baseSchema, uiSchema }).save()
+        .then(eventSchema => res.status(201).send(eventSchema))
+        .catch(reason => res.status(500)
+            .send({ error: `Server Error occurred while trying to create event schema: ${reason}` }))
 };
 
 export const getAllEventSchemas = async (req: IdentifiedRequest, res: Response) => {
-    try {
-        const eventSchemas: IEventSchema[] = await EventSchemaModel.find();
-        res.send(eventSchemas);
-    } catch (error) {
-        res.sendStatus(400);
-    }
+    EventSchemaModel.find()
+        .then((eventSchemas) => res.send(eventSchemas))
+        .catch(reason => res.status(500)
+            .send({ error: `Server Error occurred while trying to get event schemas: ${reason}` }));
 };
 
 export const deleteEventSchema = async (req: Request, res: Response) => {
-    try {
-        const { id } = req.params;
-        const deletedEventSchema: IEventSchema[] = await EventSchemaModel.findByIdAndDelete(id);
-        res.send(deletedEventSchema);
-    } catch (error) {
-        res.sendStatus(400);
-    }
+    const { id } = req.params;
+    EventSchemaModel.findByIdAndDelete(id)
+        .then(deletedEventSchema => res.send(deletedEventSchema))
+        .catch(reason => res.status(500)
+            .send({ error: `Server Error occurred while trying to delete event schema: ${reason}` }))
 };

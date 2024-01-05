@@ -1,5 +1,5 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import AppChart from './Chart';
 import ChartType from "../../../../../models/chart-type.interface";
 

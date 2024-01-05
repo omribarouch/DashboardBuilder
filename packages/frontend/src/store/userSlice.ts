@@ -1,5 +1,6 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { IUser } from "models/user.interface";
+import HttpClient from "../utils/httpClient";
 
 interface LoginRequest {
     username: string;
@@ -13,11 +14,11 @@ export interface UserState {
 const loadUserFromStorage = (): IUser | undefined => {
     const storedUser = localStorage.getItem('user');
     return storedUser ? JSON.parse(storedUser) : undefined;
-  };
+};
 
 const initialState: UserState = {
-   loggedUser: loadUserFromStorage(),
-   users: []
+    loggedUser: loadUserFromStorage(),
+    users: []
 };
 
 const userSlice = createSlice({
@@ -33,19 +34,19 @@ const userSlice = createSlice({
         builder.addCase(register.pending, () => {
             console.log("register.pending");
         });
-        
+
         builder.addCase(register.fulfilled, (state, action: PayloadAction<IUser>) => {
             state.users.push(action.payload);
             state.loggedUser = action.payload;
             localStorage.setItem('user', JSON.stringify(action.payload));
         });
-        
+
         builder.addCase(login.pending, () => {
             console.log("register.pending");
         });
-        
+
         builder.addCase(login.fulfilled, (state, action: any) => {
-            if (!state.users.find(user => user.name === action.username)) {
+            if (!state.users.find(user => user.username === action.username)) {
                 state.users.push(action.payload);
             }
             state.loggedUser = action.payload;
@@ -57,18 +58,24 @@ const userSlice = createSlice({
 export const login = createAsyncThunk(
     "user/login",
     async (payload: LoginRequest) => {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      return {name: payload.username, password: payload.password, isAdmin: true};
+        await new HttpClient().post('/auth/login', {
+            username: payload.username,
+            password: payload.password
+        });
+        return {name: payload.username, password: payload.password, isAdmin: false};
     }
 );
 
 export const register = createAsyncThunk(
     "user/register",
     async (user: IUser) => {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      return user;
+        await new HttpClient().post('/auth/login', {
+            username: user.username,
+            password: user.password
+        });
+        return user;
     }
-  );
+);
 
 export const { logout } = userSlice.actions;
 

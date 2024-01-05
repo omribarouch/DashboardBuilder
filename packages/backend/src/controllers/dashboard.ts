@@ -2,62 +2,51 @@ import { Request, Response } from "express";
 import { DashboardModel } from "../models/dashboard";
 import IChart from "../models/interfaces/chart";
 import IDashboard from "../models/interfaces/dashboard";
+import IdentifiedRequest from "../models/interfaces/identifiedRequest";
 
-export const createDashboard = async (req: Request, res: Response) => {
-	try {
-		const { name } = req.body;
-		const creatorUsername: string = 'omby8888';
-		let charts: IChart[] = [];
-		if (req.body.charts) {
-			charts = req.body.charts;
-		}
-
-		const dashboard = new DashboardModel({ name, charts, creatorUsername });
-		await dashboard.save();
-		res.status(201).send(dashboard);
-	} catch (error) {
-		console.log(error);
-		res.sendStatus(400);
+export const createDashboard = async (req: IdentifiedRequest, res: Response) => {
+	const { name } = req.body;
+	const creatorUsername: string = req.identity.username;
+	let charts: IChart[] = [];
+	if (req.body.charts) {
+		charts = req.body.charts;
 	}
+
+	new DashboardModel({ name, charts, creatorUsername }).save()
+		.then(dashboard => res.status(201).send(dashboard))
+		.catch(reason => res.status(500)
+			.send({ error: `Server Error occurred while trying to create dashboard: ${reason}` }));
 };
 
 export const getDashboard = async (req: Request, res: Response) => {
-	try {
-		const { id } = req.params;
-		const dashboard: IDashboard = await DashboardModel.findOne({ _id: id });
-		res.send(dashboard);
-	} catch (error) {
-		res.sendStatus(400);
-	}
+	const { id } = req.params;
+	DashboardModel.findOne({ _id: id })
+		.then(dashboard => res.send(dashboard))
+		.catch(reason => res.status(500)
+			.send({ error: `Server Error occurred while trying to get dashboard: ${reason}` }));
 };
 
 export const getDashboards = async (req: Request, res: Response) => {
-	try {
-		const dashboards: IDashboard[] = await DashboardModel.find();
-		res.send(dashboards);
-	} catch (error) {
-		res.sendStatus(400);
-	}
+	DashboardModel.find()
+		.then(dashboards => res.send(dashboards))
+		.catch(reason => res.status(500)
+			.send({ error: `Server Error occurred while trying to get dashboard: ${reason}` }));
 };
 
 export const updateDashboard = async (req: Request, res: Response) => {
-	try {
-		const { id } = req.params;
-		const newValues = req.body;
-		const updatedDashboard = await DashboardModel.findOneAndUpdate({ _id: id }, newValues, {new: true});
-		res.send(updatedDashboard);
-	} catch (error) {
-		console.log(error);
-		res.sendStatus(400);
-	}
+	const { id } = req.params;
+	const newValues = req.body;
+	DashboardModel.findOneAndUpdate({ _id: id }, newValues, {new: true})
+		.then(updatedDashboard => res.send(updatedDashboard))
+		.catch(reason => res.status(500)
+			.send({ error: `Server Error occurred while trying to get dashboard: ${reason}` }));
 };
 
 export const deleteDashboard = async (req: Request, res: Response) => {
-	try {
-		const { id } = req.params;
-		const deletedDashboard = await DashboardModel.findByIdAndDelete(id);
-		res.send(deletedDashboard);
-	} catch (error) {
-		res.sendStatus(400);
-	}
+	const { id } = req.params;
+	DashboardModel.findByIdAndDelete(id)
+		.then(deletedDashboard => res.send(deletedDashboard))
+		.catch(reason => res.status(500)
+			.send({ error: `Server Error occurred while trying to get dashboard: ${reason}` }));
+
 };
