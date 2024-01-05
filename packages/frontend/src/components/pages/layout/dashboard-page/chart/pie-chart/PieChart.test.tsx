@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { AppPieChart } from './PieChart';
-import { ChartType } from '../../../../../../models/chart-type.interface';
+import { ChartType } from '../../../../../../../../backend/src/models/interfaces/chartType';
 
 it('It should mount', () => {
   const div = document.createElement('div');

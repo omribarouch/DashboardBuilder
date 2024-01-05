@@ -1,6 +1,5 @@
-import ChartType from "models/chart-type.interface";
+import ChartType from "../../../../backend/src/models/interfaces/chartType";
 import IChart from "models/chart.interface";
-import ChartAction from "store/actions/dashboard-action";
 
 interface DashboardState {
    charts: IChart[]

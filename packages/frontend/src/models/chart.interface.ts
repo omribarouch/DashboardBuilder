@@ -1,4 +1,4 @@
-import ChartType from "./chart-type.interface";
+import ChartType from "../../../backend/src/models/interfaces/chartType";
 import IDisplayable from "./displayable.inteface";
 
 
