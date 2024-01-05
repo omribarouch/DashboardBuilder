@@ -1,7 +1,7 @@
-interface User {
+interface IUser {
     username: string;
     password: string;
     isAdmin?: boolean;
 }
 
-export default User;
+export default IUser;

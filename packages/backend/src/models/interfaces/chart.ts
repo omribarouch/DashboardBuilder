@@ -1,8 +1,9 @@
 import ChartType from "./chartType";
+import { Schema } from "mongoose";
 
-interface Chart {
-    id: number;
+interface IChart {
     type: ChartType;
+    eventSchemaId: Schema.Types.ObjectId;
     schemaPropertyName: string;
     description?: string;
     x: number;
@@ -11,4 +12,4 @@ interface Chart {
     height: number;
 }
 
-export default Chart;
+export default IChart;

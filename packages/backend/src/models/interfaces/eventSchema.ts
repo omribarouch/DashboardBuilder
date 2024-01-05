@@ -1,8 +1,7 @@
-interface EventSchema {
-    id: number;
+interface IEventSchema {
     name: string;
     baseSchema: object;
     uiSchema: object;
 }
 
-export default EventSchema;
+export default IEventSchema;

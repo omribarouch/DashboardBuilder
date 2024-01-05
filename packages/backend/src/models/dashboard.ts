@@ -1,12 +1,17 @@
 import { Schema, model } from "mongoose";
-import Dashboard from "./interfaces/dashboard";
-import Chart from "./chart";
+import ChartType from "./interfaces/chartType";
 
-const DashboardModel = model('Dashboard', new Schema({
-    id: { type: Number, required: true },
+export const DashboardModel = model('Dashboard', new Schema({
     name: { type: String, required: true },
     creatorUsername: { type: String, required: true },
-    charts: { type: [Chart], required: true }
+    charts: [{
+        type: { type: String, enum: ChartType, required: true },
+        eventSchemaId: { type: Schema.Types.ObjectId, required: true },
+        schemaPropertyName: { type: String, required: true },
+        description: String,
+        x: { type: Number, required: true },
+        y: { type: Number, required: true },
+        width: { type: Number, required: true },
+        height: { type: Number, required: true }
+    }]
 }));
-
-export default DashboardModel;

@@ -1,10 +1,9 @@
-import Chart from "./chart";
+import IChart from "./chart";
 
-interface Dashboard {
-    id: number;
+interface IDashboard {
     name: string;
     creatorUsername: string;
-    charts: Chart[];
+    charts: IChart[];
 }
 
-export default Dashboard;
+export default IDashboard;
