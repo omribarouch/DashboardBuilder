@@ -1,12 +1,12 @@
 import express = require("express");
 
-import { isAuthenticated } from '../middlewares';
+import { isAdmin, isAuthenticated } from '../middlewares/auth';
 import {createEventSchema, deleteEventSchema, getAllEventSchemas} from "../controllers/eventSchema";
 
 const eventSchemaRouter = express.Router();
 
-eventSchemaRouter.get('/'/*, isAuthenticated*/, getAllEventSchemas);
-eventSchemaRouter.post('/'/*, isAuthenticated*/, createEventSchema);
-eventSchemaRouter.delete('/:id'/*, isAuthenticated*/, deleteEventSchema);
+eventSchemaRouter.get('/', isAuthenticated, getAllEventSchemas);
+eventSchemaRouter.post('/', isAuthenticated, isAdmin, createEventSchema);
+eventSchemaRouter.delete('/:id', isAuthenticated, isAdmin, deleteEventSchema);
 
 export default eventSchemaRouter;

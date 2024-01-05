@@ -8,10 +8,10 @@ export const setAuthCookie = (user: IUser, res: Response) => {
 	res.cookie(ACCESS_TOKEN_KEY, authToken, { httpOnly: true });
 };
 
-export const decodeAccessToken = (req: Request) => {
+export const decodeAccessToken = (req: Request): IUser => {
 	try {
 		const token: any = req.cookies[ACCESS_TOKEN_KEY];
-		return jwt.verify(token, process.env.SECRET_KEY);
+		return jwt.verify(token, process.env.SECRET_KEY) as IUser;
 	} catch (err) {
 		console.error('Invalid token', err);
 	}

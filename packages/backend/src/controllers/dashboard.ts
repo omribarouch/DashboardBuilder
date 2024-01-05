@@ -1,10 +1,9 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response } from "express";
 import { DashboardModel } from "../models/dashboard";
 import IChart from "../models/interfaces/chart";
 import IDashboard from "../models/interfaces/dashboard";
-import { ObjectId } from 'mongodb';
 
-export const createDashboard = async (req: Request, res: Response, next: NextFunction) => {
+export const createDashboard = async (req: Request, res: Response) => {
 	try {
 		const { name } = req.body;
 		const creatorUsername: string = 'omby8888';
@@ -22,7 +21,7 @@ export const createDashboard = async (req: Request, res: Response, next: NextFun
 	}
 };
 
-export const getDashboard = async (req: Request, res: Response, next: NextFunction)=> {
+export const getDashboard = async (req: Request, res: Response) => {
 	try {
 		const { id } = req.params;
 		const dashboard: IDashboard = await DashboardModel.findOne({ _id: id });
@@ -32,7 +31,7 @@ export const getDashboard = async (req: Request, res: Response, next: NextFuncti
 	}
 };
 
-export const getDashboards = async (req: Request, res: Response, next: NextFunction)=> {
+export const getDashboards = async (req: Request, res: Response) => {
 	try {
 		const dashboards: IDashboard[] = await DashboardModel.find();
 		res.send(dashboards);
@@ -41,7 +40,7 @@ export const getDashboards = async (req: Request, res: Response, next: NextFunct
 	}
 };
 
-export const updateDashboard = async (req: Request, res: Response, next: NextFunction)=> {
+export const updateDashboard = async (req: Request, res: Response) => {
 	try {
 		const { id } = req.params;
 		const newValues = req.body;
@@ -53,7 +52,7 @@ export const updateDashboard = async (req: Request, res: Response, next: NextFun
 	}
 };
 
-export const deleteDashboard = async (req: Request, res: Response, next: NextFunction)=> {
+export const deleteDashboard = async (req: Request, res: Response) => {
 	try {
 		const { id } = req.params;
 		const deletedDashboard = await DashboardModel.findByIdAndDelete(id);

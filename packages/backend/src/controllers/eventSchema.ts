@@ -1,8 +1,9 @@
 import { EventSchemaModel } from "../models/eventSchema";
-import { Request, Response, NextFunction } from "express";
+import { Request, Response } from "express";
 import IEventSchema from "../models/interfaces/eventSchema";
+import IdentifiedRequest from "../models/interfaces/identifiedRequest";
 
-export const createEventSchema = async (req: Request, res: Response, next: NextFunction) => {
+export const createEventSchema = async (req: Request, res: Response) => {
     try {
         const { name, baseSchema, uiSchema } = req.body;
         const eventSchema = new EventSchemaModel({ name, baseSchema, uiSchema });
@@ -13,7 +14,7 @@ export const createEventSchema = async (req: Request, res: Response, next: NextF
     }
 };
 
-export const getAllEventSchemas = async (req: Request, res: Response, next: NextFunction)=> {
+export const getAllEventSchemas = async (req: IdentifiedRequest, res: Response) => {
     try {
         const eventSchemas: IEventSchema[] = await EventSchemaModel.find();
         res.send(eventSchemas);
@@ -22,7 +23,7 @@ export const getAllEventSchemas = async (req: Request, res: Response, next: Next
     }
 };
 
-export const deleteEventSchema = async (req: Request, res: Response, next: NextFunction)=> {
+export const deleteEventSchema = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
         const deletedEventSchema: IEventSchema[] = await EventSchemaModel.findByIdAndDelete(id);
