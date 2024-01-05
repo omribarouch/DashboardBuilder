@@ -1,4 +1,4 @@
-import ChartType from "../../../../backend/src/models/interfaces/chartType";
+import ChartType from "../../models/chart-type.interface";
 import IChart from "models/chart.interface";
 
 interface DashboardState {

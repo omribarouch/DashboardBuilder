@@ -1,4 +1,4 @@
-import React = require("react");
+import * as React from 'react';
 import IChart from '../../../../../models/chart.interface';
 import AppBarChart from './bar-chart/BarChart'
 import AppPieChart from './pie-chart/PieChart'

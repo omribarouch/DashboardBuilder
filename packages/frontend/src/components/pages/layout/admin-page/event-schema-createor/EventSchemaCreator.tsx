@@ -1,5 +1,6 @@
 import { RJSFSchema } from "@rjsf/utils";
-import React, { useCallback } from "react";
+import * as React from "react";
+import { useCallback } from "react";
 import { useState } from "react";
 import MonacoEditor from '@monaco-editor/react'
 import Form from "@rjsf/core";

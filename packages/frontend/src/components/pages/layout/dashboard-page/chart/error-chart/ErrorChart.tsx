@@ -1,7 +1,6 @@
-import React, { FC } from 'react';
-import { ChartProps } from '../Chart';
+import * as React from 'react';
 
-const AppErrorChart: FC<ChartProps> = () => (
+const AppErrorChart = () => (
  <div>
     AppErrorChart Component
  </div>

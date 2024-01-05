@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
-import RGL, { Layout, WidthProvider } from 'react-grid-layout';
+import * as React from 'react';
+import { useState } from 'react';
+import * as RGL from 'react-grid-layout';
+import { Layout, WidthProvider } from 'react-grid-layout';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 import { useSelector } from 'react-redux';

@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 
 const AppHomePage = () => (
    <div className="container mt-5 overflow-hidden h-auto">

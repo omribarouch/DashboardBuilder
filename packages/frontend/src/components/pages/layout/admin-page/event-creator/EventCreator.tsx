@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import * as React from 'react';
+import { useState } from "react";
 import { useSelector } from "react-redux";
 import { RJSFSchema } from "@rjsf/utils";
 import Form from "@rjsf/core";
@@ -17,7 +18,7 @@ const EventCreator = () => {
             <form>
                 <div className="form-group">
                     <div className="form-control">
-                        <label for="schemaPicker">Event Schema</label>
+                        <label htmlFor="schemaPicker">Event Schema</label>
 
                         <select
                             id="schemaPicker"

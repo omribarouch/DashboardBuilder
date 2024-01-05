@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import AppBarChart from './BarChart';
-import ChartType from '../../../../../../../../backend/src/models/interfaces/chartType';
+import ChartType from '../../../../../../models/chart-type.interface';
 
 it('It should mount', () => {
   const div = document.createElement('div');
