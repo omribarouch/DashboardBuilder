@@ -5,6 +5,9 @@ import { useState } from "react";
 import MonacoEditor from '@monaco-editor/react'
 import Form from "@rjsf/core";
 import validator from "@rjsf/validator-ajv8";
+import { AppDispatch } from "../../../../../store/store";
+import { useDispatch } from "react-redux";
+import { createEventSchema } from "../../../../../store/eventSchemaSlice";
 
 const EventSchemaCreator = () => {
     const initialSchema: RJSFSchema = {
@@ -13,8 +16,6 @@ const EventSchemaCreator = () => {
         required: []
     };
 
-    const [schema, setSchema] = useState<RJSFSchema>(initialSchema);
-
     const monacoEditorOptions = {
         minimap: {
             enabled: false,
@@ -22,7 +23,9 @@ const EventSchemaCreator = () => {
         automaticLayout: true,
     };
 
+    const [schema, setSchema] = useState<RJSFSchema>(initialSchema);
     const [valid, setValid] = useState(true);
+    const dispatch: AppDispatch = useDispatch();
     const onCodeChange = useCallback((code: string | undefined) => {
         if (!code) {
             return;
@@ -30,7 +33,7 @@ const EventSchemaCreator = () => {
 
         try {
             const parsedCode = JSON.parse(code);
-            setValid(true);
+            setValid(parsedCode?.properties && Object.keys(parsedCode.properties).length > 0);
             setSchema(parsedCode);
         } catch (err) {
             setValid(false);
@@ -62,7 +65,7 @@ const EventSchemaCreator = () => {
                 </div>
             </div>
 
-            <button className='btn btn-primary' disabled={valid}>Create Schema</button>
+            <button className='btn btn-primary' onClick={() => dispatch(createEventSchema(schema))} disabled={!valid}>Create Schema</button>
         </>
     );
 };

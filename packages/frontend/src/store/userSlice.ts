@@ -1,5 +1,5 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { IUser } from "models/user.interface";
+import { IUser } from "../models/user.interface";
 import HttpClient from "../utils/httpClient";
 
 interface LoginRequest {
@@ -9,6 +9,8 @@ interface LoginRequest {
 export interface UserState {
     loggedUser: IUser;
     users: IUser[];
+    isLoading: boolean;
+    errorMessage: string | undefined;
 }
 
 const loadUserFromStorage = (): IUser | undefined => {
@@ -18,7 +20,9 @@ const loadUserFromStorage = (): IUser | undefined => {
 
 const initialState: UserState = {
     loggedUser: loadUserFromStorage(),
-    users: []
+    users: [],
+    isLoading: false,
+    errorMessage: undefined
 };
 
 const userSlice = createSlice({
@@ -31,21 +35,24 @@ const userSlice = createSlice({
         }
     },
     extraReducers: (builder) => {
-        builder.addCase(register.pending, () => {
-            console.log("register.pending");
+        builder.addCase(register.pending, (state) => {
+            state.isLoading = true;
         });
 
         builder.addCase(register.fulfilled, (state, action: PayloadAction<IUser>) => {
+            state.isLoading = false;
             state.users.push(action.payload);
             state.loggedUser = action.payload;
             localStorage.setItem('user', JSON.stringify(action.payload));
         });
 
-        builder.addCase(login.pending, () => {
-            console.log("register.pending");
+        builder.addCase(login.pending, (state) => {
+            state.isLoading = true;
         });
 
         builder.addCase(login.fulfilled, (state, action: any) => {
+            state.isLoading = false;
+
             if (!state.users.find(user => user.username === action.username)) {
                 state.users.push(action.payload);
             }
@@ -69,7 +76,7 @@ export const login = createAsyncThunk(
 export const register = createAsyncThunk(
     "user/register",
     async (user: IUser) => {
-        await new HttpClient().post('/auth/login', {
+        await new HttpClient().post('/auth/register', {
             username: user.username,
             password: user.password
         });

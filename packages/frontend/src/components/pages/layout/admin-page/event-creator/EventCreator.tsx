@@ -4,9 +4,10 @@ import { useSelector } from "react-redux";
 import { RJSFSchema } from "@rjsf/utils";
 import Form from "@rjsf/core";
 import validator from "@rjsf/validator-ajv8";
+import { RootState } from "../../../../../store/store";
 
 const EventCreator = () => {
-    const eventSchemas: RJSFSchema[] = useSelector((state: any) => state.eventSchemas.eventSchemas);
+    const eventSchemas: RJSFSchema[] = useSelector((state: RootState) => state.eventSchemas.eventSchemas);
     const [pickedSchema, setPickedSchema] = useState<string>('');
 
     const handleChange = (event) => {

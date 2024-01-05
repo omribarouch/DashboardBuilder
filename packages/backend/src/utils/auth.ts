@@ -5,6 +5,7 @@ import { ACCESS_TOKEN_KEY } from "../../consts";
 
 export const setAuthCookie = (user: IUser, res: Response) => {
 	const authToken: string = jwt.sign(user, process.env.SECRET_KEY,{ expiresIn: '3h' });
+	res.setHeader("Access-Control-Allow-Credentials", "true");
 	res.cookie(ACCESS_TOKEN_KEY, authToken, { httpOnly: true });
 };
 

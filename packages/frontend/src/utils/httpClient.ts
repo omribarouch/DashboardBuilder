@@ -2,6 +2,7 @@ class HttpClient {
 	async get(endpoint: string, headers: object = {}) {
 		const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}${endpoint}`, {
 			method: 'GET',
+			credentials: 'include',
 			headers: { ...headers }
 		});
 		if (!response.ok) {
@@ -13,10 +14,12 @@ class HttpClient {
 	async post(endpoint: string, body: object, headers: object = {}): Promise<any> {
 		const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}${endpoint}`, {
 			method: 'POST',
+			credentials: 'include',
 			headers: {
 				'Content-Type': 'application/json',
 				...headers
 			},
+
 			body: JSON.stringify(body)
 		});
 		if (!response.ok) {
@@ -27,7 +30,8 @@ class HttpClient {
 
 	async put(endpoint: string, body: object, headers: object = {}): Promise<any> {
 		const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}${endpoint}`, {
-			method: 'POST',
+			method: 'PUT',
+			credentials: 'include',
 			headers: {
 				'Content-Type': 'application/json',
 				...headers
@@ -43,6 +47,7 @@ class HttpClient {
 	async delete(endpoint: string, body: object = {}, headers: object = {}): Promise<any> {
 		const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}${endpoint}`, {
 			method: 'DELETE',
+			credentials: 'include',
 			headers: {
 				'Content-Type': 'application/json',
 				...headers
