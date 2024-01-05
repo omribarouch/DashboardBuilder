@@ -6,7 +6,7 @@ import { IUser } from '../../../../models/user.interface';
 import { Link } from 'react-router-dom';
 
 const AppNavbar = () => {
-   const loggedUser: IUser = useSelector((state: RootState) => state.user.loggedUser);
+   const loggedUser: IUser = useSelector((state: RootState) => state.auth.loggedUser);
    const dispatch = useDispatch<AppDispatch>();
 
    return (
@@ -33,7 +33,7 @@ const AppNavbar = () => {
 
          <div className='text-white'>
             <span className='me-2'>Hello { loggedUser.username }!</span>
-            <a className="nav-item" href='#' onClick={() => dispatch(logout())}>Logout</a>
+            <button className="btn btn-outline-primary" onClick={() => dispatch(logout())}>Logout</button>
          </div>
       </nav>
    );

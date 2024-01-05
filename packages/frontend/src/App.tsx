@@ -15,7 +15,7 @@ import { useEffect } from "react";
 import { whoami } from "./store/authSlice";
 
 export default function App() {
-  const loggedUser: IUser | undefined = useSelector((state: RootState) => state.user.loggedUser);
+  const loggedUser: IUser | undefined = useSelector((state: RootState) => state.auth.loggedUser);
   const dispatch: AppDispatch = useDispatch();
 
   useEffect(() => {

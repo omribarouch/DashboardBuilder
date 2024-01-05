@@ -35,7 +35,7 @@ const authSlice = createSlice({
             .addCase(login.pending, (state) => {
                 state.isLoading = true;
             })
-            .addCase(login.fulfilled, (state, action: PayloadAction<any>) => {
+            .addCase(login.fulfilled, (state, action: PayloadAction<IUser>) => {
                 state.isLoading = false;
                 console.log('login fulfilled', action.payload);
                 state.loggedUser = action.payload;
@@ -43,7 +43,7 @@ const authSlice = createSlice({
             .addCase(register.pending, (state) => {
                 state.isLoading = true;
             })
-            .addCase(register.fulfilled, (state, action: PayloadAction<any>) => {
+            .addCase(register.fulfilled, (state, action: PayloadAction<IUser>) => {
                 state.isLoading = false;
                 console.log('register fulfilled', action.payload);
                 state.loggedUser = action.payload;
@@ -62,22 +62,22 @@ export const whoami = createAsyncThunk(
 export const login = createAsyncThunk(
     "auth/login",
     async (payload: LoginRequest) => {
-        await new HttpClient().post('/auth/login', {
+        const loggedUser: IUser = await new HttpClient().post('/auth/login', {
             username: payload.username,
             password: payload.password
         });
-        return {username: payload.username, password: payload.password, isAdmin: false};
+        return loggedUser;
     }
 );
 
 export const register = createAsyncThunk(
     "auth/register",
-    async (user: IUser) => {
-        await new HttpClient().post('/auth/register', {
-            username: user.username,
-            password: user.password
+    async (payload: LoginRequest) => {
+        const newUser: IUser = await new HttpClient().post('/auth/register', {
+            username: payload.username,
+            password: payload.password
         });
-        return user;
+        return newUser;
     }
 );
 

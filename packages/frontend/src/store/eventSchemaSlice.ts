@@ -1,10 +1,10 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import HttpClient from "../utils/httpClient";
-import { RJSFSchema } from "@rjsf/utils";
 import IEventSchema from "../models/event-schema.interface";
+import { RJSFSchema } from "@rjsf/utils";
 
 interface EventSchemaState {
-	eventSchemas: RJSFSchema[];
+	eventSchemas: IEventSchema[];
 	isLoading: boolean;
 	errorMessage: string | undefined;
 }
@@ -21,17 +21,15 @@ const eventSchemaSlice = createSlice({
 	reducers: {},
 	extraReducers: (builder) => {
 		builder.addCase(getEventSchemas.pending, (state: EventSchemaState) => {
-			console.log('hartabuna pending');
 			state.isLoading = true;
 		});
 
 		builder.addCase(getEventSchemas.fulfilled, (state: EventSchemaState, action: PayloadAction<IEventSchema[]>) => {
-			console.log('hartabuna done', action.payload);
 			state.isLoading = false;
 			state.eventSchemas = action.payload;
 		});
 
-		builder.addCase(createEventSchema.fulfilled, (state: EventSchemaState, action: PayloadAction<IEventSchema>) => {
+		builder.addCase(createEventSchema.fulfilled, (state: EventSchemaState, action: PayloadAction<any>) => {
 			state.eventSchemas.push(action.payload);
 		});
 	},
@@ -40,9 +38,8 @@ const eventSchemaSlice = createSlice({
 export const getEventSchemas = createAsyncThunk(
 	"eventSchema/getEventSchemas",
 	async () => {
-		console.log('hartabuna');
-		await new HttpClient().get('/event-schema');
-		return [];
+		const eventSchemas: IEventSchema[] = await new HttpClient().get('/event-schema');
+		return eventSchemas;
 	}
 );
 

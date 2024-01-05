@@ -6,9 +6,10 @@ import Form from "@rjsf/core";
 import validator from "@rjsf/validator-ajv8";
 import { AppDispatch, RootState } from "../../../../../store/store";
 import { getEventSchemas } from "../../../../../store/eventSchemaSlice";
+import IEventSchema from "../../../../../models/event-schema.interface";
 
 const EventCreator = () => {
-    const eventSchemas: RJSFSchema[] = useSelector((state: RootState) => state.eventSchemas.eventSchemas);
+    const eventSchemas: IEventSchema[] = useSelector((state: RootState) => state.eventSchemas.eventSchemas);
     const [pickedSchema, setPickedSchema] = useState<string>('');
     const dispatch: AppDispatch = useDispatch();
 
@@ -34,7 +35,8 @@ const EventCreator = () => {
                             onChange={handleChange}
                         >
                             {
-                                eventSchemas.map(eventSchema => <option value={JSON.stringify(eventSchema)}>{eventSchema.title}</option>)
+                                eventSchemas.map(eventSchema =>
+                                    <option value={JSON.stringify(eventSchema)}>{eventSchema.name}</option>)
                             }
                         </select>
                     </div>
@@ -43,7 +45,7 @@ const EventCreator = () => {
             
             <div className="container">
                 { pickedSchema &&
-                    <Form schema={JSON.parse(pickedSchema)} validator={validator} />
+                    <Form schema={JSON.parse(pickedSchema).baseSchema} validator={validator} />
                 }
             </div>
         </>
