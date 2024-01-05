@@ -1,7 +1,17 @@
 import { Request, Response } from "express";
 import { UserModel } from "../models/user";
 import IUser from "../models/interfaces/user";
-import { setAuthCookie } from "../utils/auth";
+import { decodeAccessToken, setAuthCookie } from "../utils/auth";
+import { ACCESS_TOKEN_KEY } from "../../consts";
+
+export const whoami = async (req: Request, res: Response) => {
+	const loggedUser: IUser | undefined = decodeAccessToken(req);
+	if (!loggedUser) {
+		return res.status(401)
+	}
+
+	return res.send(loggedUser);
+};
 
 export const login = async (req: Request, res: Response) => {
 	const { username, password } = req.body;

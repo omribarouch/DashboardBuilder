@@ -7,13 +7,21 @@ import AppAdminPage from './components/pages/layout/admin-page/AdminPage';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import EventSchemaCreator from './components/pages/layout/admin-page/event-schema-createor/EventSchemaCreator';
 import EventCreator from './components/pages/layout/admin-page/event-creator/EventCreator';
-import { useSelector } from 'react-redux';
-import { RootState } from './store/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from './store/store';
 import { IUser } from './models/user.interface';
 import LoginPage from './components/pages/login-page/LoginPage';
+import { useEffect } from "react";
+import { whoami } from "./store/authSlice";
 
 export default function App() {
   const loggedUser: IUser | undefined = useSelector((state: RootState) => state.user.loggedUser);
+  const dispatch: AppDispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(whoami());
+  }, []);
+
   const router: React.JSX.Element = (
     <BrowserRouter>
         <Routes>

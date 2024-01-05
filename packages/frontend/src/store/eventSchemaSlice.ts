@@ -21,10 +21,12 @@ const eventSchemaSlice = createSlice({
 	reducers: {},
 	extraReducers: (builder) => {
 		builder.addCase(getEventSchemas.pending, (state: EventSchemaState) => {
+			console.log('hartabuna pending');
 			state.isLoading = true;
 		});
 
 		builder.addCase(getEventSchemas.fulfilled, (state: EventSchemaState, action: PayloadAction<IEventSchema[]>) => {
+			console.log('hartabuna done', action.payload);
 			state.isLoading = false;
 			state.eventSchemas = action.payload;
 		});
@@ -37,9 +39,10 @@ const eventSchemaSlice = createSlice({
 
 export const getEventSchemas = createAsyncThunk(
 	"eventSchema/getEventSchemas",
-	async (payload: IEventSchema[]) => {
+	async () => {
+		console.log('hartabuna');
 		await new HttpClient().get('/event-schema');
-		return payload;
+		return [];
 	}
 );
 

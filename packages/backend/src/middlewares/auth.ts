@@ -13,7 +13,7 @@ export const isAuthenticated = async (req: Request, res: Response, next: NextFun
             return res.status(401).send({ error: "You must authenticate in order to use that api." });
         }
 
-        const existingUser: IUser = decodeAccessToken(req);
+        const existingUser: IUser | undefined = decodeAccessToken(req);
         merge(req, { identity: existingUser });
 
         return next();

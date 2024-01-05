@@ -3,7 +3,7 @@ import { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../../store/store';
-import { login, register } from '../../../store/userSlice';
+import { login, register } from '../../../store/authSlice';
 
 const LoginPage = () => {
   const [username, setUsername] = useState('');

@@ -1,14 +1,20 @@
 import * as React from 'react';
-import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { RJSFSchema } from "@rjsf/utils";
 import Form from "@rjsf/core";
 import validator from "@rjsf/validator-ajv8";
-import { RootState } from "../../../../../store/store";
+import { AppDispatch, RootState } from "../../../../../store/store";
+import { getEventSchemas } from "../../../../../store/eventSchemaSlice";
 
 const EventCreator = () => {
     const eventSchemas: RJSFSchema[] = useSelector((state: RootState) => state.eventSchemas.eventSchemas);
     const [pickedSchema, setPickedSchema] = useState<string>('');
+    const dispatch: AppDispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(getEventSchemas());
+    }, []);
 
     const handleChange = (event) => {
         setPickedSchema(event.target.value);

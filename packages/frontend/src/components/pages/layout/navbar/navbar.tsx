@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../store/store';
-import { logout } from '../../../../store/userSlice';
+import { logout } from '../../../../store/authSlice';
 import { IUser } from '../../../../models/user.interface';
+import { Link } from 'react-router-dom';
 
 const AppNavbar = () => {
    const loggedUser: IUser = useSelector((state: RootState) => state.user.loggedUser);
@@ -17,22 +18,22 @@ const AppNavbar = () => {
          <div className="collapse navbar-collapse" id="navbarNav">
             <ul className="navbar-nav">
                <li className="nav-item">
-                  <a className="nav-link" href="/">Home</a>
+                  <Link className="nav-link" to="/">Home</Link>
                </li>
                
                <li className="nav-item">
-                  <a className="nav-link" href="/dashboard">Dashboards</a>
+                  <Link className="nav-link" to="/dashboard">Dashboards</Link>
                </li>
                
                <li className="nav-item">
-                  <a className="nav-link" href="/admin">Admin</a>
+                   <Link className="nav-link" to="/admin">Admin</Link>
                </li>
             </ul>
          </div>
 
          <div className='text-white'>
-            <span className='me-2'>Hello {loggedUser.name}!</span>
-            <a className="nav-item" href='/' onClick={() => dispatch(logout())}>Logout</a>
+            <span className='me-2'>Hello { loggedUser.username }!</span>
+            <a className="nav-item" href='#' onClick={() => dispatch(logout())}>Logout</a>
          </div>
       </nav>
    );
