@@ -1,7 +1,7 @@
-import express = require("express");
-import { merge, get } from 'lodash';
+import { Request, Response, NextFunction } from "express";
+import { merge } from 'lodash';
 
-export const isAuthenticated = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+export const isAuthenticated = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const sessionToken = req.cookies['Authorization'];
 

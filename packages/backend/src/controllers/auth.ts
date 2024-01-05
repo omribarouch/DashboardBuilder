@@ -1,9 +1,9 @@
-import { NextFunction, Request, Response } from "express";
-import jwt = require('jsonwebtoken');
+import { Request, Response } from "express";
 import { UserModel } from "../models/user";
 import IUser from "../models/interfaces/user";
+import { setAuthCookie } from "../utils/auth";
 
-export const login = async (req: Request, res: Response, next: NextFunction) => {
+export const login = async (req: Request, res: Response) => {
 	const { username, password } = req.body;
 	UserModel.findOne({ username })
 		.then(existingUser => {
@@ -16,20 +16,20 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
 				res.status(403).send({ error: 'The password you entered is incorrect.'});
 			}
 
-			res.send({ 'accessToken': jwt.sign(existingUserObject, 'Dashboard Builder Secret',
-					{ expiresIn: '3h' })});
+			setAuthCookie(existingUserObject, res);
+			res.sendStatus(200);
 		})
 		.catch(reason => {
 			res.status(500).send({ error: `Server Error occurred while trying to login: ${reason}` });
 		});
 };
 
-export const register = async (req: Request, res: Response, next: NextFunction) => {
+export const register = async (req: Request, res: Response) => {
 	const { username, password } = req.body;
 	new UserModel({ username, password }).save()
 		.then((newUser) => {
-			res.send({ 'accessToken': jwt.sign(newUser.toObject(), 'Dashboard Builder Secret',
-					{ expiresIn: '3h' })});
+			setAuthCookie(newUser.toObject(), res);
+			res.sendStatus(200);
 		})
 		.catch(reason => {
 			res.status(500).send({ error: `Server Error occurred while trying to register user: ${reason}` });
