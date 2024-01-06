@@ -33,7 +33,7 @@ const AppDashboardsPage = () => {
 							onClick={() => dispatch(openModal())}>
 						<FontAwesomeIcon icon={faPlus} className="me-1" />
 
-						Create Dashboard
+						Create
 					</button>
 				</div>
 

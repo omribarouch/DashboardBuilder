@@ -10,6 +10,11 @@ import { AppDispatch, RootState } from "../../../../../store/store";
 import { useParams } from "react-router-dom";
 import { IDashboard } from "../../../../../models/dashboard";
 import { getDashboard } from "../../../../../store/dashboardSlice";
+import { closeModal, openModal } from "../../../../../store/modalSlice";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus, faSave, faTrash } from "@fortawesome/free-solid-svg-icons";
+import Modal from "../../../../common/modal/Modal";
+import CreateDashboardModal from "../create-dashboard-modal/CreateDashboardModal";
 
 const ReactGridLayout = WidthProvider(RGL);
 
@@ -52,6 +57,22 @@ const AppDashboardPage = () => {
                     </div>
 
                     <div className="card-body">
+                        <div className="d-flex flex-row-reverse gap-2">
+                            <button className="btn btn-outline-primary rounded"
+                                    onClick={() => dispatch(openModal())}>
+                                <FontAwesomeIcon icon={faSave} className="me-1" />
+
+                                Save
+                            </button>
+
+                            <button className="btn btn-outline-danger rounded"
+                                    onClick={() => dispatch(openModal())}>
+                                <FontAwesomeIcon icon={faTrash} className="me-1" />
+
+                                Delete
+                            </button>
+                        </div>
+
                         <ReactGridLayout
                             className="layout"
                             layout={ layout }
