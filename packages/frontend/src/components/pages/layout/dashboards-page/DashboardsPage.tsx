@@ -22,29 +22,28 @@ const AppDashboardsPage = () => {
 	}, [dispatch]);
 
 	return (
-		<div className="container card py-4">
+		<div className="container card p-0">
 			<div className="card-header">
 				<h1 className="text-center">Dashboards</h1>
 			</div>
 
-			<div className="d-flex flex-row-reverse">
-				<button className="btn btn-outline-primary rounded"
-						onClick={() => dispatch(openModal())}>
-					<FontAwesomeIcon icon={faPlus} className="me-1" />
-
-					Create Dashboard
-				</button>
-			</div>
-
-			<Modal
-				isOpen={isModalOpen}
-				onClose={() => dispatch(closeModal())}
-				title="Create Dashboard"
-			>
-				<CreateDashboardModal />
-			</Modal>
-
 			<div className="card-body">
+				<div className="d-flex flex-row-reverse">
+					<button className="btn btn-outline-primary rounded"
+							onClick={() => dispatch(openModal())}>
+						<FontAwesomeIcon icon={faPlus} className="me-1" />
+
+						Create Dashboard
+					</button>
+				</div>
+
+				<Modal
+					isOpen={isModalOpen}
+					onClose={() => dispatch(closeModal())}
+					title="Create Dashboard">
+					<CreateDashboardModal />
+				</Modal>
+
 				{ dashboards.length > 0 ?
 					<table className="table table-striped table-hover">
 						<thead className="">
@@ -52,6 +51,7 @@ const AppDashboardsPage = () => {
 							<th scope="col">#</th>
 							<th scope="col">Name</th>
 							<th scope="col">Description</th>
+							<th scope="col">Creator</th>
 							<th>Action</th>
 						</tr>
 						</thead>
@@ -62,6 +62,7 @@ const AppDashboardsPage = () => {
 									<th scope="row">{ index + 1 }</th>
 									<td>{ dashboardPreview.name }</td>
 									<td>{ dashboardPreview.description }</td>
+									<td>{ dashboardPreview.creatorUsername }</td>
 									<td>
 										<Link to={`/dashboard/${dashboardPreview._id}`}>
 											<button className="btn btn-outline-primary btn-sm rounded">

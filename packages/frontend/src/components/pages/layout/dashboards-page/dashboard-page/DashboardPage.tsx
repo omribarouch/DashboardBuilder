@@ -41,21 +41,38 @@ const AppDashboardPage = () => {
     };
 
     return (
-        <ReactGridLayout
-            className="layout"
-            layout={layout}
-            cols={8}
-            rowHeight={30}
-            onLayoutChange={onLayoutChange}
-            draggableHandle=".drag-handle">
+        <>
             {
-                layout.map((panel, chartIndex) => (
-                    <div key={currentDashboard?.charts[chartIndex]._id} className="panel drag-handle d-flex row p-1 m-1 border border-2 rounded" data-grid={panel}>
-                        <AppChart chart={currentDashboard.charts[chartIndex]} />
+                currentDashboard &&
+                <div className="container card p-0">
+                    <div className="card-header">
+                        <h2>{ currentDashboard.name }</h2>
+
+                        <small>{ currentDashboard.description }</small>
                     </div>
-                ))
+
+                    <div className="card-body">
+                        <ReactGridLayout
+                            className="layout"
+                            layout={ layout }
+                            cols={ 8 }
+                            rowHeight={ 30 }
+                            onLayoutChange={ onLayoutChange }
+                            draggableHandle=".drag-handle">
+                            {
+                                layout.map((panel, chartIndex) => (
+                                    <div key={ currentDashboard?.charts[chartIndex]._id }
+                                         className="panel drag-handle d-flex row p-1 m-1 border border-2 rounded"
+                                         data-grid={ panel }>
+                                        <AppChart chart={ currentDashboard.charts[chartIndex] }/>
+                                    </div>
+                                ))
+                            }
+                        </ReactGridLayout>
+                    </div>
+                </div>
             }
-        </ReactGridLayout>
+        </>
     );
 };
 
