@@ -1,7 +1,7 @@
 interface IEventSchema {
     name: string;
-    baseSchema: object;
-    uiSchema: object;
+    baseSchema: any;
+    uiSchema: any;
 }
 
 export default IEventSchema;

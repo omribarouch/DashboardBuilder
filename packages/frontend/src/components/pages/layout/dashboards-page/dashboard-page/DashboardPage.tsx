@@ -14,54 +14,50 @@ import { getDashboard } from "../../../../../store/dashboardSlice";
 const ReactGridLayout = WidthProvider(RGL);
 
 const AppDashboardPage = () => {
-  const { id } = useParams();
-  const currentDashboard: IDashboard | undefined = useSelector((state: RootState) =>
-      state.dashboards.dashboards.get(id));
-  const [layout, setLayout] = useState<Layout[]>([]);
-  const dispatch: AppDispatch = useDispatch();
+    const { id } = useParams();
+    const currentDashboard: IDashboard | undefined = useSelector((state: RootState) =>
+        state.dashboards.dashboards.find(dashboard => dashboard._id === id));
+    const [layout, setLayout] = useState<Layout[]>([]);
+    const dispatch: AppDispatch = useDispatch();
 
-  useEffect(() => {
-    if (!currentDashboard) {
-      dispatch(getDashboard(id));
-    } else {
-      console.log(currentDashboard.charts);
-      setLayout(currentDashboard.charts.map(chart =>
-          ({
-            i: chart.description,
-            x: chart.x,
-            y: chart.y,
-            w: chart.width,
-            h: chart.height
-          })
-      ));
-    }
-  }, [currentDashboard]);
+    useEffect(() => {
+        if (!currentDashboard) {
+            dispatch(getDashboard(id));
+        } else {
+            setLayout(currentDashboard.charts.map(chart =>
+                ({
+                    i: chart.description,
+                    x: chart.x,
+                    y: chart.y,
+                    w: chart.width,
+                    h: chart.height
+                })
+            ));
+        }
+    }, [currentDashboard]);
 
-  const onLayoutChange = (newLayout: Layout[]) => {
-    setLayout(newLayout);
-  };
+    const onLayoutChange = (newLayout: Layout[]) => {
+        setLayout(newLayout);
+    };
 
-  return (
-    <>
-    <ReactGridLayout
-      className="layout"
-      layout={layout}
-      cols={8}
-      rowHeight={30}
-      onLayoutChange={onLayoutChange}
-      draggableHandle=".drag-handle"
-    >
-      {
-         layout.map((panel, chartIndex) => (
-            <div key={panel.i} className="panel drag-handle d-flex row p-1 m-1 border border-2 rounded" data-grid={panel}>
-            <div className="text-center mb-2">{panel.i}</div>
-            <AppChart chart={currentDashboard?.charts[chartIndex]} />
-            </div>
-         ))
-      }
-    </ReactGridLayout>
-    </>
-  );
+    return (
+        <ReactGridLayout
+            className="layout"
+            layout={layout}
+            cols={8}
+            rowHeight={30}
+            onLayoutChange={onLayoutChange}
+            draggableHandle=".drag-handle">
+            {
+                layout.map((panel, chartIndex) => (
+                    <div key={currentDashboard?.charts[chartIndex]._id} className="panel drag-handle d-flex row p-1 m-1 border border-2 rounded" data-grid={panel}>
+                        <div className="text-center mb-2">{panel.i}</div>
+                        <AppChart chart={currentDashboard?.charts[chartIndex]} />
+                    </div>
+                ))
+            }
+        </ReactGridLayout>
+    );
 };
 
 export default AppDashboardPage;

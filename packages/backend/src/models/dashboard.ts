@@ -3,6 +3,7 @@ import ChartType from "./interfaces/chartType";
 
 export const DashboardModel = model('Dashboard', new Schema({
     name: { type: String, required: true },
+    description: { type: String, required: true },
     creatorUsername: { type: String, required: true },
     charts: [{
         type: { type: String, enum: ChartType, required: true },

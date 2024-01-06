@@ -37,6 +37,16 @@ const eventSchemaSlice = createSlice({
 	},
 });
 
+export const createEventSchema = createAsyncThunk(
+	"eventSchema/createEventSchema",
+	async (payload: IEventSchema) => {
+		const newEventSchema: IEventSchema = await new HttpClient().post('/event-schema', {
+			...payload
+		});
+		return newEventSchema;
+	}
+);
+
 export const getEventSchemas = createAsyncThunk(
 	"eventSchema/getEventSchemas",
 	async () => {
@@ -45,12 +55,11 @@ export const getEventSchemas = createAsyncThunk(
 	}
 );
 
-export const createEventSchema = createAsyncThunk(
-	"eventSchema/createEventSchema",
-	async (payload: IEventSchema) => {
-		const newEventSchema: IEventSchema = await new HttpClient().post('/event-schema', {
-			...payload
-		});
+export const getBreakdownBySchemaProperty = createAsyncThunk(
+	"eventSchema/getBreakdownBySchemaProperty",
+	async (payload: { eventSchemaId: string, schemaPropertyName: string }) => {
+		const newEventSchema: IEventSchema = await new HttpClient().get(`/event-schema/
+		${payload.eventSchemaId}/breakdown/${payload.schemaPropertyName}`);
 		return newEventSchema;
 	}
 );

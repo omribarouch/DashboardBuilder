@@ -13,7 +13,8 @@ export const store = configureStore({
         eventSchemas: eventSchemaSlice,
         events: eventSlice,
         dashboards: dashboardSlice
-    }
+    },
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware()
 });
 
 export type RootState = ReturnType<typeof store.getState>;

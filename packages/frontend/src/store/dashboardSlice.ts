@@ -3,14 +3,14 @@ import HttpClient from "../utils/httpClient";
 import { IDashboard, IDashboardPreview } from "../../../models/dashboard";
 
 interface DashboardState {
-	dashboardsPreviews: Map<string, IDashboardPreview>;
-	dashboards: Map<string, IDashboard>;
+	dashboardsPreviews: IDashboardPreview[];
+	dashboards: IDashboard[];
 	isLoading: boolean;
 }
 
 const initialState: DashboardState = {
-	dashboardsPreviews: new Map<string, IDashboardPreview>(),
-	dashboards: new Map<string, IDashboard>(),
+	dashboardsPreviews: [],
+	dashboards: [],
 	isLoading: false
 };
 
@@ -26,8 +26,7 @@ const dashboardSlice = createSlice({
 			.addCase(getDashboards.fulfilled,
 				(state: DashboardState, action: PayloadAction<IDashboardPreview[]>) => {
 					state.isLoading = false;
-					state.dashboardsPreviews = new Map<string, IDashboardPreview>(action.payload
-						.map(dashboardPreview => [dashboardPreview._id, dashboardPreview]));
+					state.dashboardsPreviews = action.payload;
 				})
 			.addCase(getDashboard.pending, (state: DashboardState) => {
 				state.isLoading = true;
@@ -35,7 +34,7 @@ const dashboardSlice = createSlice({
 			.addCase(getDashboard.fulfilled,
 				(state: DashboardState, action: PayloadAction<IDashboard>) => {
 					state.isLoading = false;
-					state.dashboards.set(action.payload._id, action.payload);
+					state.dashboards.push(action.payload);
 				})
 			.addCase(saveDashboard.pending, (state: DashboardState) => {
 				state.isLoading = true;
@@ -43,8 +42,18 @@ const dashboardSlice = createSlice({
 			.addCase(saveDashboard.fulfilled,
 				(state: DashboardState, action: PayloadAction<IDashboard>) => {
 					state.isLoading = false;
-					state.dashboardsPreviews[action.payload._id] = action.payload as IDashboardPreview;
-					state.dashboards[action.payload._id] = action.payload;
+
+					const previewIndex: number = state.dashboardsPreviews
+						.findIndex(dashboardPreview => dashboardPreview._id === action.payload._id);
+					if (previewIndex >= 0) {
+						state.dashboardsPreviews[previewIndex] = action.payload as IDashboardPreview;
+					}
+
+					const dashboardIndex: number = state.dashboards
+						.findIndex(dashboard => dashboard._id === action.payload._id);
+					if (dashboardIndex >= 0) {
+						state.dashboards[previewIndex] = action.payload;
+					}
 				});
 	},
 });
@@ -60,7 +69,6 @@ export const getDashboards = createAsyncThunk(
 export const getDashboard = createAsyncThunk(
 	"dashboard/getDashboard",
 	async (dashboardId: string) => {
-		console.log(dashboardId);
 		const dashboard: IDashboard = await new HttpClient().get(`/dashboard/${ dashboardId }`);
 		return dashboard;
 	}

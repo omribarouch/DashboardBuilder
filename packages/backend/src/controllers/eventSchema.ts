@@ -3,6 +3,7 @@ import { Request, Response } from "express";
 import IEventSchema from "../models/interfaces/eventSchema";
 import IdentifiedRequest from "../models/interfaces/identifiedRequest";
 import { EventModel } from "../models/event";
+import { ObjectId } from "mongodb";
 
 export const createEventSchema = async (req: Request, res: Response) => {
     const { name, baseSchema, uiSchema } = req.body;
@@ -24,17 +25,34 @@ export const getBreakdownBySchemaProperty = async (req: IdentifiedRequest, res: 
     EventSchemaModel.findById(id)
         .then(rawEventSchema => {
             const eventSchema: IEventSchema = rawEventSchema.toObject();
-            if (!eventSchema.baseSchema.hasOwnProperty(schemaProperty)) {
+            if (!eventSchema.baseSchema.properties.hasOwnProperty(schemaProperty)) {
                 return res.status(400)
                     .send({ error: `No such property named ${schemaProperty} in event schema ${id}`});
             }
 
-            EventModel.aggregate([{ $group: { _id: "$type", count: { $sum: 1 } } }])
-                .exec((err, res) => {
+            EventModel.aggregate([
+                {
+                    $match: {
+                        eventSchemaId: new ObjectId(id)
+                    }
+                },
+                {
+                    $group: {
+                        _id: `$eventData.${schemaProperty}`,
+                        count: { $sum: 1 }
+                    }
+                }
+            ])
+                .exec((err, queryResult: [{ _id: any, count: number }]) => {
                     if (err) {
-                        console.error(err);
+                        return res.status(500).send({ error: `Server Error occurred while trying to get breakdown by schema property: ${err}` });
                     } else {
-                        console.log(res);
+                        const parsedResult = queryResult.map(entry => ({
+                            name: entry._id,
+                            value: entry.count
+                        }));
+
+                        return res.send(parsedResult);
                     }
                 });
         })

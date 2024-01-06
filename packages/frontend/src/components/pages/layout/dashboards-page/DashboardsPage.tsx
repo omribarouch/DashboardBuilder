@@ -9,8 +9,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExternalLink } from "@fortawesome/free-solid-svg-icons";
 
 const AppDashboardsPage = () => {
-	const dashboards: Map<string, IDashboardPreview> = useSelector((state: RootState) =>
-		state.dashboards.dashboardsPreviews)
+	const dashboards: IDashboardPreview[] = useSelector((state: RootState) =>
+		state.dashboards.dashboardsPreviews);
 	const dispatch: AppDispatch = useDispatch();
 
 	useEffect(() => {
@@ -26,17 +26,17 @@ const AppDashboardsPage = () => {
 				<tr className="pointer">
 					<th scope="col">#</th>
 					<th scope="col">Name</th>
-					<th scope="col">Creator User</th>
+					<th scope="col">Description</th>
 					<th>Action</th>
 				</tr>
 				</thead>
 				<tbody>
 				{
-					Array.from(dashboards.values()).map((dashboardPreview: IDashboardPreview, index: number) =>
+					dashboards.map((dashboardPreview: IDashboardPreview, index: number) =>
 						<tr>
 							<th scope="row">{ index + 1 }</th>
 							<td>{ dashboardPreview.name }</td>
-							<td>{ dashboardPreview.creatorUsername }</td>
+							<td>{ dashboardPreview.description }</td>
 							<td>
 								<Link to={`/dashboard/${dashboardPreview._id}`}>
 									<button type="button" className="btn btn-outline-primary btn-sm rounded">

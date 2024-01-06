@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts';
 import { mapToNameValue } from '../../../../../../../models/nameValue';
-import { FC } from "react";
-import { ChartProps } from "../Chart";
+import { FC, useEffect } from "react";
+import { ChildChartProps } from "../Chart";
 
 const COLORS: string[] = [
     '#FF0000', // Red
@@ -19,8 +19,8 @@ const COLORS: string[] = [
     '#000000', // Black
 ];
 
-const AppPieChart: FC<ChartProps> = ({ chart }) => {
-   const breakdown = mapToNameValue(new Map());
+const AppPieChart: FC<ChildChartProps> = ({ chart }) => {
+    const breakdown = mapToNameValue(new Map([['gever', 1]]));
 
     return (
         <ResponsiveContainer width="100%" height="100%">

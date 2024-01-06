@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { DashboardModel } from "../models/dashboard";
 import IChart from "../models/interfaces/chart";
-import IDashboard from "../models/interfaces/dashboard";
 import IdentifiedRequest from "../models/interfaces/identifiedRequest";
 
 export const createDashboard = async (req: IdentifiedRequest, res: Response) => {
