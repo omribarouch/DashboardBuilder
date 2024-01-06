@@ -90,7 +90,7 @@ const AppDashboardPage = () => {
                             draggableHandle=".drag-handle">
                             {
                                 layout.map((panel, chartIndex) => (
-                                    <div key={ currentDashboard?.charts[chartIndex]._id }
+                                    <div key={ currentDashboard.charts[chartIndex]._id }
                                          className="panel drag-handle d-flex row p-1 m-1 border border-2 rounded"
                                          data-grid={ panel }>
                                         <AppChart chart={ currentDashboard.charts[chartIndex] }/>

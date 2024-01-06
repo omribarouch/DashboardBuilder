@@ -8,6 +8,7 @@ import { closeModal } from "../../../../../../store/modalSlice";
 import { IDashboard } from "../../../../../../models/dashboard";
 import EventSchemaPicker from "../../../../../common/event-schema-picker/EventSchemaPicker";
 import IEventSchema from "../../../../../../models/eventSchema";
+import ChartType from "../../../../../../models/chartType";
 
 interface CreateDashboardModalProps {
 	currentDashboard: IDashboard;
@@ -68,7 +69,12 @@ const CreateChartModal: FC<CreateDashboardModalProps> = ({ currentDashboard }) =
 
 			<button className="btn btn-primary btn-block"
 					onClick={() => {
-						dispatch(createChart(currentDashboard._id));
+						dispatch(createChart({
+							dashboardId: currentDashboard._id,
+							eventSchemaId: eventSchema._id,
+							schemaPropertyName: schemaPropertyName,
+							chartType: ChartType.Bar
+						}));
 						dispatch(closeModal());
 					}}>
 				Create

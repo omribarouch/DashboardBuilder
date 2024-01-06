@@ -3,6 +3,13 @@ import HttpClient from "../utils/httpClient";
 import { IDashboard, IDashboardPreview } from "../../../models/dashboard";
 import ChartType from "../models/chartType";
 
+interface CreateChart {
+	dashboardId: string;
+	eventSchemaId: string;
+	schemaPropertyName: string;
+	chartType: ChartType;
+}
+
 interface DashboardState {
 	dashboardsPreviews: IDashboardPreview[];
 	dashboards: IDashboard[];
@@ -19,20 +26,21 @@ const dashboardSlice = createSlice({
 	name: "dashboard",
 	initialState,
 	reducers: {
-		createChart: (state: DashboardState, action: PayloadAction<string>) => {
-			const currentDashboard: IDashboard = state.dashboards.find(dashboard => dashboard._id === action.payload);
+		createChart: (state: DashboardState, action: PayloadAction<CreateChart>) => {
+			const currentDashboard: IDashboard = state.dashboards
+				.find(dashboard => dashboard._id === action.payload.dashboardId);
 			if (!currentDashboard) {
 				return;
 			}
 
 			currentDashboard.charts.push({
-				x: Infinity,
-				y: Infinity,
+				x: 0,
+				y: 0,
 				width: 4,
 				height: 4,
-				type: ChartType.Bar,
-				eventSchemaId: undefined,
-				schemaPropertyName: undefined
+				type: action.payload.chartType,
+				eventSchemaId: action.payload.eventSchemaId,
+				schemaPropertyName: action.payload.schemaPropertyName
 			});
 		},
 		deleteChart: (state: DashboardState, action: PayloadAction<string>) => {
@@ -132,11 +140,10 @@ export const getDashboard = createAsyncThunk(
 export const saveDashboard = createAsyncThunk(
 	"dashboard/saveDashboard",
 	async (payload: IDashboard) => {
-		// const updatedDashboard: IDashboard = await new HttpClient().put(`/dashboard/${payload._id}`, {
-		// 	...payload
-		// });
-		console.log('saving:', payload);
-		return payload;
+		const updatedDashboard: IDashboard = await new HttpClient().put(`/dashboard/${payload._id}`, {
+			...payload
+		});
+		return updatedDashboard;
 	}
 );
 
