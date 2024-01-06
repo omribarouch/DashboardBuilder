@@ -2,8 +2,9 @@ import { Request, Response } from "express";
 import IEventSchema from "../models/interfaces/eventSchema";
 import { EventSchemaModel } from "../models/eventSchema";
 import { EventModel } from "../models/event";
-import { ValidateFunction } from "ajv";
-import { createSchemaValidator } from "../utils/event";
+import Ajv from "ajv";
+
+const ajv = new Ajv({ allErrors: false });
 
 export const createEvent = async (req: Request, res: Response) => {
 	const { eventSchemaId } = req.body;
@@ -15,11 +16,9 @@ export const createEvent = async (req: Request, res: Response) => {
 
 			const eventSchema: IEventSchema = rawEventSchema.toObject();
 			const { eventData } = req.body;
-			const validate: ValidateFunction = createSchemaValidator(eventSchema);
-
-			const isEventValid: boolean = validate(eventData);
+			const isEventValid: boolean = ajv.validate(eventSchema.baseSchema, eventData);
 			if (!isEventValid) {
-				return res.status(400).send(validate.errors);
+				return res.status(400).send(ajv.errors);
 			}
 
 			new EventModel({ eventSchemaId, eventData }).save()

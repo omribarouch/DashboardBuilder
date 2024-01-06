@@ -1,7 +1,6 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import HttpClient from "../utils/httpClient";
 import IEventSchema from "../models/event-schema.interface";
-import { RJSFSchema } from "@rjsf/utils";
 
 interface EventSchemaState {
 	eventSchemas: IEventSchema[];
@@ -45,13 +44,11 @@ export const getEventSchemas = createAsyncThunk(
 
 export const createEventSchema = createAsyncThunk(
 	"eventSchema/createEventSchema",
-	async (payload: RJSFSchema) => {
-		await new HttpClient().post('/event-schema', {
-			name: 'geverrr',
-			baseSchema: payload,
-			uiSchema: {}
+	async (payload: IEventSchema) => {
+		const newEventSchema: IEventSchema = await new HttpClient().post('/event-schema', {
+			...payload
 		});
-		return payload;
+		return newEventSchema;
 	}
 );
 

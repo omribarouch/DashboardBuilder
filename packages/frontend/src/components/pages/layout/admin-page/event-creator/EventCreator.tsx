@@ -19,7 +19,7 @@ const EventCreator = () => {
 
     useEffect(() => {
         dispatch(getEventSchemas());
-    }, []);
+    });
 
     const handleSchemaChange = (event) => {
         const eventSchemaId: string = event.target.value;
