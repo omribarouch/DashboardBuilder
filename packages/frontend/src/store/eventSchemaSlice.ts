@@ -1,6 +1,7 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import HttpClient from "../utils/httpClient";
 import IEventSchema from "../../../models/eventSchema";
+import { NameValue } from "../models/nameValue";
 
 interface EventSchemaState {
 	eventSchemas: IEventSchema[];
@@ -58,9 +59,9 @@ export const getEventSchemas = createAsyncThunk(
 export const getBreakdownBySchemaProperty = createAsyncThunk(
 	"eventSchema/getBreakdownBySchemaProperty",
 	async (payload: { eventSchemaId: string, schemaPropertyName: string }) => {
-		const newEventSchema: IEventSchema = await new HttpClient().get(`/event-schema/
+		const breakdown: NameValue[] = await new HttpClient().get(`/event-schema/
 		${payload.eventSchemaId}/breakdown/${payload.schemaPropertyName}`);
-		return newEventSchema;
+		return breakdown;
 	}
 );
 

@@ -9,13 +9,14 @@ import { AppDispatch } from "../../../../../../store/store";
 import { useDispatch } from "react-redux";
 import { FC, useEffect } from "react";
 import { getBreakdownBySchemaProperty } from "../../../../../../store/eventSchemaSlice";
+import { NameValue } from "../../../../../../models/nameValue";
 
 export interface BaseChartProps {
    chart: IChart
 }
 
 export interface ChildChartProps extends BaseChartProps {
-   breakdown: Record<string, number>;
+   breakdown: NameValue[];
 }
 
 const chartTypeToComponent: Map<ChartType, FC<ChildChartProps>> = new Map<ChartType, FC<ChildChartProps>>([
@@ -24,7 +25,7 @@ const chartTypeToComponent: Map<ChartType, FC<ChildChartProps>> = new Map<ChartT
 ]);
 
 const AppChart: FC<BaseChartProps> = ({ chart }) => {
-   const breakdown: Record<string, number> = {gever: 5, tttt: 2};
+   const breakdown: NameValue[] = [{name: 'gever', value: 5}, {name: 'yeled', value: 2}];
    const dispatch: AppDispatch = useDispatch();
 
    // useEffect(() => {
@@ -35,9 +36,10 @@ const AppChart: FC<BaseChartProps> = ({ chart }) => {
    // }, []);
 
    return (
-      <ResponsiveContainer width="100%" height="auto">
-      {React.createElement(chartTypeToComponent.get(chart.type) || AppErrorChart, { chart, breakdown })}
-      </ResponsiveContainer>
+          <>
+             <div className="text-center mb-2">{ chart.description }</div>
+             {React.createElement(chartTypeToComponent.get(chart.type) || AppErrorChart, { chart, breakdown })}
+          </>
    );
 }
 

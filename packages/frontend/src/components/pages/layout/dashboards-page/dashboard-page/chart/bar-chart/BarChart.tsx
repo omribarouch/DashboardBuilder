@@ -6,18 +6,13 @@ import { ChildChartProps } from "../Chart";
 const AppBarChart: FC<ChildChartProps> = ({ chart, breakdown }) => {
     return (
         <ResponsiveContainer width="100%" height="100%">
-            <BarChart>
-                { Object.keys(breakdown).map(key =>
-                    <>
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey={ key } />
-                        <YAxis />
-                        <Tooltip />
-                        <Legend />
-                        <Bar dataKey={ breakdown[key] } fill="#8884d8" />
-                    </>
-                )
-                }
+            <BarChart data={ breakdown }>
+                <Legend />
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="name" />
+                <YAxis />
+                <Tooltip />
+                <Bar dataKey="value" fill="#8884d8" />
             </BarChart>
         </ResponsiveContainer>
     );

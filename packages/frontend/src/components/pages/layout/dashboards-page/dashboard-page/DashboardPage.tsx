@@ -51,8 +51,7 @@ const AppDashboardPage = () => {
             {
                 layout.map((panel, chartIndex) => (
                     <div key={currentDashboard?.charts[chartIndex]._id} className="panel drag-handle d-flex row p-1 m-1 border border-2 rounded" data-grid={panel}>
-                        <div className="text-center mb-2">{panel.i}</div>
-                        <AppChart chart={currentDashboard?.charts[chartIndex]} />
+                        <AppChart chart={currentDashboard.charts[chartIndex]} />
                     </div>
                 ))
             }
