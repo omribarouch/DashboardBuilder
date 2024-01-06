@@ -19,18 +19,21 @@ const eventSchemaSlice = createSlice({
 	initialState,
 	reducers: {},
 	extraReducers: (builder) => {
-		builder.addCase(getEventSchemas.pending, (state: EventSchemaState) => {
-			state.isLoading = true;
-		});
-
-		builder.addCase(getEventSchemas.fulfilled, (state: EventSchemaState, action: PayloadAction<IEventSchema[]>) => {
-			state.isLoading = false;
-			state.eventSchemas = action.payload;
-		});
-
-		builder.addCase(createEventSchema.fulfilled, (state: EventSchemaState, action: PayloadAction<any>) => {
-			state.eventSchemas.push(action.payload);
-		});
+		builder
+			.addCase(getEventSchemas.pending, (state: EventSchemaState) => {
+				state.isLoading = true;
+			})
+			.addCase(getEventSchemas.fulfilled, (state: EventSchemaState, action: PayloadAction<IEventSchema[]>) => {
+				state.isLoading = false;
+				state.eventSchemas = action.payload;
+			})
+			.addCase(createEventSchema.pending, (state: EventSchemaState) => {
+				state.isLoading = true;
+			})
+			.addCase(createEventSchema.fulfilled, (state: EventSchemaState, action: PayloadAction<any>) => {
+				state.isLoading = false;
+				state.eventSchemas.push(action.payload);
+			});
 	},
 });
 

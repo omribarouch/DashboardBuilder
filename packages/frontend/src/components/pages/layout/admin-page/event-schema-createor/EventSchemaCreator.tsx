@@ -5,8 +5,8 @@ import { useState } from "react";
 import MonacoEditor from '@monaco-editor/react'
 import Form from "@rjsf/core";
 import validator from "@rjsf/validator-ajv8";
-import { AppDispatch } from "../../../../../store/store";
-import { useDispatch } from "react-redux";
+import { AppDispatch, RootState } from "../../../../../store/store";
+import { useDispatch, useSelector } from "react-redux";
 import { createEventSchema } from "../../../../../store/eventSchemaSlice";
 
 const monacoEditorOptions = {
@@ -30,6 +30,7 @@ const EventSchemaCreator = () => {
 	const [isJsonSchemaValid, setIsJsonSchemaValid] = useState(false);
 	const [isUISchemaValid, setIsUISchemaValid] = useState(true);
 	const dispatch: AppDispatch = useDispatch();
+	const isLoading: boolean = useSelector((state: RootState) => state.eventSchemas.isLoading);
 
 	const onSchemaChange = (jsonCode: string,
 							validityFn: (schema: RJSFSchema) => boolean,
@@ -37,7 +38,7 @@ const EventSchemaCreator = () => {
 							setValid: Dispatch<SetStateAction<boolean>>) => {
 		try {
 			const parsedCode = JSON.parse(jsonCode);
-            console.log('validity:', validityFn(parsedCode));
+			console.log('validity:', validityFn(parsedCode));
 			setValid(validityFn(parsedCode));
 			setSchema(parsedCode);
 		} catch (err) {
@@ -97,18 +98,24 @@ const EventSchemaCreator = () => {
 						<div className='card-header'>Event Preview</div>
 
 						<div className="p-3">
-							<Form schema={jsonSchema} uiSchema={uiSchema} validator={validator} children={true} />
+							<Form schema={jsonSchema}
+								  uiSchema={uiSchema}
+								  validator={validator}
+								  children={true} />
 						</div>
 					</div>
 
 					<button
 						className='btn btn-primary'
+						disabled={isLoading}
 						onClick={() => dispatch(createEventSchema({
 							name: 'omri',
 							baseSchema: jsonSchema,
 							uiSchema: uiSchema
-						}))}
-					>
+						}))}>
+						{ isLoading &&
+							<span className="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+						}
 						Create Schema
 					</button>
 				</>

@@ -16,6 +16,7 @@ const EventCreator = () => {
     const [pickedEventSchema, setPickedEventSchema] = useState<RJSFSchema>({});
     const [eventData, setEventData] = useState<IEvent>({ eventSchemaId: null, eventData: {} });
     const dispatch: AppDispatch = useDispatch();
+    const isLoading: boolean = useSelector((state: RootState) => state.events.isLoading);
 
     useEffect(() => {
         dispatch(getEventSchemas());
@@ -25,7 +26,6 @@ const EventCreator = () => {
         const eventSchemaId: string = event.target.value;
         setPickedSchemaId(eventSchemaId);
         setPickedEventSchema(eventSchemas.find(eventSchema => eventSchema._id === eventSchemaId).baseSchema);
-        console.log(eventSchemas.find(eventSchema => eventSchema._id === eventSchemaId).baseSchema);
         setEventData({
             ...eventData,
             eventSchemaId: eventSchemaId
@@ -65,9 +65,17 @@ const EventCreator = () => {
                 { pickedSchemaId &&
                     <Form schema={pickedEventSchema}
                           validator={validator}
-                          onChange={handleFormChange}
-                          onSubmit={() => dispatch(createEvent(eventData))}
-                    />
+                          onChange={handleFormChange}>
+                        <button
+                            className='btn btn-primary'
+                            disabled={isLoading}
+                            onClick={() => dispatch(createEvent(eventData))}>
+                            { isLoading &&
+                                <span className="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+                            }
+                            Trigger Event
+                        </button>
+                    </Form>
                 }
             </div>
         </>

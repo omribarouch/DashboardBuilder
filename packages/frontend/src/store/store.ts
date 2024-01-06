@@ -1,13 +1,15 @@
 import { configureStore } from '@reduxjs/toolkit';
-import dashboardReducer from './reducers/dashboard-reducer';
 import authSlice from './authSlice';
 import eventSchemaSlice from "./eventSchemaSlice";
+import eventSlice from "./eventSlice";
+import dashboardSlice from "./dashboardSlice";
 
 export const store = configureStore({
     reducer: {
-        dashboards: dashboardReducer,
+        auth: authSlice,
         eventSchemas: eventSchemaSlice,
-        auth: authSlice
+        events: eventSlice,
+        dashboards: dashboardSlice
     }
 });
 

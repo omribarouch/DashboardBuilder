@@ -15,13 +15,13 @@ const eventSlice = createSlice({
 	initialState,
 	reducers: {},
 	extraReducers: (builder) => {
-		builder.addCase(createEvent.pending, (state: EventState) => {
-			state.isLoading = true;
-		});
-
-		builder.addCase(createEvent.fulfilled, (state: EventState, action: PayloadAction<IEvent>) => {
-			state.isLoading = false;
-		});
+		builder
+			.addCase(createEvent.pending, (state: EventState) => {
+				state.isLoading = true;
+			})
+			.addCase(createEvent.fulfilled, (state: EventState, action: PayloadAction<IEvent>) => {
+				state.isLoading = false;
+			});
 	},
 });
 
