@@ -12,7 +12,7 @@ import IEvent from "../../../../../models/event";
 
 const EventCreator = () => {
     const eventSchemas: IEventSchema[] = useSelector((state: RootState) => state.eventSchemas.eventSchemas);
-    const [pickedSchemaId, setPickedSchemaId] = useState<string>('');
+    const [pickedSchemaId, setPickedSchemaId] = useState<string>(undefined);
     const [pickedEventSchema, setPickedEventSchema] = useState<RJSFSchema>({});
     const [eventData, setEventData] = useState<IEvent>({ eventSchemaId: '', eventData: {} });
     const dispatch: AppDispatch = useDispatch();
@@ -25,6 +25,10 @@ const EventCreator = () => {
     const handleSchemaChange = (event) => {
         const eventSchemaId: string = event.target.value;
         setPickedSchemaId(eventSchemaId);
+        if (!eventSchemaId) {
+            return;
+        }
+
         setPickedEventSchema(eventSchemas.find(eventSchema => eventSchema._id === eventSchemaId).baseSchema);
         setEventData({
             ...eventData,
@@ -33,7 +37,6 @@ const EventCreator = () => {
     };
 
     const handleFormChange = (event) => {
-        console.log(event.formData);
         setEventData({
             ...eventData,
             eventData: event.formData
@@ -53,6 +56,7 @@ const EventCreator = () => {
                             value={pickedSchemaId}
                             onChange={handleSchemaChange}
                         >
+                            <option value={undefined} />)
                             {
                                 eventSchemas.map(eventSchema =>
                                     <option value={eventSchema._id}>{eventSchema.name}</option>)
