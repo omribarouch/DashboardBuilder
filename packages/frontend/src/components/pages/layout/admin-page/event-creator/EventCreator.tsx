@@ -6,15 +6,15 @@ import Form from "@rjsf/core";
 import validator from "@rjsf/validator-ajv8";
 import { AppDispatch, RootState } from "../../../../../store/store";
 import { getEventSchemas } from "../../../../../store/eventSchemaSlice";
-import IEventSchema from "../../../../../models/event-schema.interface";
+import IEventSchema from "../../../../../models/eventSchema";
 import { createEvent } from "../../../../../store/eventSlice";
-import IEvent from "../../../../../models/event.interface";
+import IEvent from "../../../../../models/event";
 
 const EventCreator = () => {
     const eventSchemas: IEventSchema[] = useSelector((state: RootState) => state.eventSchemas.eventSchemas);
     const [pickedSchemaId, setPickedSchemaId] = useState<string>('');
     const [pickedEventSchema, setPickedEventSchema] = useState<RJSFSchema>({});
-    const [eventData, setEventData] = useState<IEvent>({ eventSchemaId: null, eventData: {} });
+    const [eventData, setEventData] = useState<IEvent>({ eventSchemaId: '', eventData: {} });
     const dispatch: AppDispatch = useDispatch();
     const isLoading: boolean = useSelector((state: RootState) => state.events.isLoading);
 

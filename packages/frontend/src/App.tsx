@@ -2,17 +2,18 @@ import * as React from 'react';
 import './App.css';
 import AppLayout from './components/pages/layout/Layout';
 import AppHomePage from './components/pages/layout/home-page/HomePage';
-import AppDashboardPage from './components/pages/layout/dashboard-page/DashboardPage';
+import AppDashboardsPage from './components/pages/layout/dashboards-page/DashboardsPage';
 import AppAdminPage from './components/pages/layout/admin-page/AdminPage';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import EventSchemaCreator from './components/pages/layout/admin-page/event-schema-createor/EventSchemaCreator';
-import EventCreator from './components/pages/layout/admin-page/event-creator/EventCreator';
+import AppEventSchemaCreator from './components/pages/layout/admin-page/event-schema-createor/EventSchemaCreator';
+import AppEventCreator from './components/pages/layout/admin-page/event-creator/EventCreator';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from './store/store';
-import { IUser } from './models/user.interface';
-import LoginPage from './components/pages/login-page/LoginPage';
+import IUser from './models/user';
+import AppLoginPage from './components/pages/login-page/LoginPage';
 import { useEffect } from "react";
 import { whoami } from "./store/authSlice";
+import AppDashboardPage from "./components/pages/layout/dashboards-page/dashboard-page/DashboardPage";
 
 export default function App() {
   const loggedUser: IUser | undefined = useSelector((state: RootState) => state.auth.loggedUser);
@@ -27,11 +28,12 @@ export default function App() {
         <Routes>
           <Route path="/" element={<AppLayout />}>
             <Route index element={<AppHomePage />} />
-            <Route path="dashboard" element={<AppDashboardPage />} />
+            <Route path="dashboard" element={<AppDashboardsPage />} />
+            <Route path="dashboard/:id" element={<AppDashboardPage />} />
             <Route path="admin" element={<AppAdminPage />}>
-              <Route index element={<EventSchemaCreator />} />
-              <Route path="event-schema" element={<EventSchemaCreator />} />
-              <Route path="event" element={<EventCreator />} />
+              <Route index element={<AppEventSchemaCreator />} />
+              <Route path="event-schema" element={<AppEventSchemaCreator />} />
+              <Route path="event" element={<AppEventCreator />} />
             </Route>
           </Route>
         </Routes>
@@ -40,7 +42,7 @@ export default function App() {
 
   return (
     <>
-      { loggedUser ? router : <LoginPage /> }
+      { loggedUser ? router : <AppLoginPage /> }
     </>
   );
 }

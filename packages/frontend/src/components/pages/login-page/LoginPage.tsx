@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { useState } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../../store/store';
 import { login, register } from '../../../store/authSlice';

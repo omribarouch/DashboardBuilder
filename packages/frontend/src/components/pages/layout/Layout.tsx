@@ -5,11 +5,27 @@ import AppNavbar from './navbar/navbar';
 
 
 const AppLayout = () => (
-   <div className='col h-100'>
-      <div className='main-navbar'><AppNavbar></AppNavbar></div>
+    <>
+        {/*<BrowserRouter>*/}
+        {/*    <Routes>*/}
+        {/*        <Route path="/" element={<AppLayout />}>*/}
+        {/*            <Route index element={<AppHomePage />} />*/}
+        {/*            <Route path="dashboard" element={<AppDashboardsPage />} />*/}
+        {/*            <Route path="admin" element={<AppAdminPage />}>*/}
+        {/*                <Route index element={<EventSchemaCreator />} />*/}
+        {/*                <Route path="event-schema" element={<EventSchemaCreator />} />*/}
+        {/*                <Route path="event" element={<EventCreator />} />*/}
+        {/*            </Route>*/}
+        {/*        </Route>*/}
+        {/*    </Routes>*/}
+        {/*</BrowserRouter>*/}
 
-      <div className='main-content'><Outlet /></div>
-   </div>
+        <div className='col h-100'>
+            <div className='main-navbar'><AppNavbar></AppNavbar></div>
+
+            <div className='main-content'><Outlet /></div>
+        </div>
+    </>
 );
 
 export default AppLayout;

@@ -1,6 +1,6 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import HttpClient from "../utils/httpClient";
-import IEventSchema from "../models/event-schema.interface";
+import IEventSchema from "../../../models/eventSchema";
 
 interface EventSchemaState {
 	eventSchemas: IEventSchema[];

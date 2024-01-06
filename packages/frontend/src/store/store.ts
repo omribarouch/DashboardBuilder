@@ -3,6 +3,9 @@ import authSlice from './authSlice';
 import eventSchemaSlice from "./eventSchemaSlice";
 import eventSlice from "./eventSlice";
 import dashboardSlice from "./dashboardSlice";
+import { enableMapSet } from 'immer';
+
+enableMapSet();
 
 export const store = configureStore({
     reducer: {

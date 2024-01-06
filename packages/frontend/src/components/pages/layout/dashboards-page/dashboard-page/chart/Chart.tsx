@@ -1,16 +1,16 @@
 import * as React from 'react';
-import IChart from '../../../../../models/chart.interface';
+import IChart from '../../../../../../models/chart';
 import AppBarChart from './bar-chart/BarChart'
 import AppPieChart from './pie-chart/PieChart'
 import AppErrorChart from './error-chart/ErrorChart';
 import { ResponsiveContainer } from 'recharts';
-import ChartType from "../../../../../models/chart-type.interface";
+import ChartType from "../../../../../../models/chartType";
 
 export interface ChartProps {
    chart: IChart
 }
 
-const chartTypeToComponent: Map<ChartType, React.ComponentType<ChartProps>> = new Map<ChartType, React.ComponentType<ChartProps>>([
+const chartTypeToComponent: Map<ChartType, React.ComponentType<ChartProps>> = new Map<ChartType, React.FC<ChartProps>>([
    [ChartType.Bar, AppBarChart],
    [ChartType.Pie, AppPieChart]
 ]);

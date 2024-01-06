@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../store/store';
 import { logout } from '../../../../store/authSlice';
-import { IUser } from '../../../../models/user.interface';
+import IUser from '../../../../models/user';
 import { Link } from 'react-router-dom';
 
 const AppNavbar = () => {

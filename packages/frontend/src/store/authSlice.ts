@@ -1,5 +1,5 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { IUser } from "../models/user.interface";
+import IUser from "../../../models/user";
 import HttpClient from "../utils/httpClient";
 
 interface LoginRequest {
@@ -7,13 +7,13 @@ interface LoginRequest {
     password: string;
 }
 
-export interface UserState {
+export interface AuthState {
     loggedUser: IUser;
     isLoading: boolean;
     errorMessage: string | undefined;
 }
 
-const initialState: UserState = {
+const initialState: AuthState = {
     loggedUser: undefined,
     isLoading: false,
     errorMessage: undefined
@@ -23,27 +23,27 @@ const authSlice = createSlice({
     name: "auth",
     initialState,
     reducers: {
-        logout: (state) => {
+        logout: (state: AuthState) => {
             return {...state, loggedUser: undefined};
         }
     },
     extraReducers: (builder) => {
         builder
-            .addCase(whoami.fulfilled, (state, action: PayloadAction<IUser>) => {
+            .addCase(whoami.fulfilled, (state: AuthState, action: PayloadAction<IUser>) => {
                 state.loggedUser = action.payload;
             })
-            .addCase(login.pending, (state) => {
+            .addCase(login.pending, (state: AuthState) => {
                 state.isLoading = true;
             })
-            .addCase(login.fulfilled, (state, action: PayloadAction<IUser>) => {
+            .addCase(login.fulfilled, (state: AuthState, action: PayloadAction<IUser>) => {
                 state.isLoading = false;
                 console.log('login fulfilled', action.payload);
                 state.loggedUser = action.payload;
             })
-            .addCase(register.pending, (state) => {
+            .addCase(register.pending, (state: AuthState) => {
                 state.isLoading = true;
             })
-            .addCase(register.fulfilled, (state, action: PayloadAction<IUser>) => {
+            .addCase(register.fulfilled, (state: AuthState, action: PayloadAction<IUser>) => {
                 state.isLoading = false;
                 console.log('register fulfilled', action.payload);
                 state.loggedUser = action.payload;

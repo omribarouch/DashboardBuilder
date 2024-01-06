@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import HttpClient from "../utils/httpClient";
-import { IDashboard, IDashboardPreview } from "../models/dashboard";
+import { IDashboard, IDashboardPreview } from "../../../models/dashboard";
 
 interface DashboardState {
 	dashboardsPreviews: Map<string, IDashboardPreview>;
@@ -45,7 +45,7 @@ const dashboardSlice = createSlice({
 					state.isLoading = false;
 					state.dashboardsPreviews[action.payload._id] = action.payload as IDashboardPreview;
 					state.dashboards[action.payload._id] = action.payload;
-				})
+				});
 	},
 });
 
@@ -60,7 +60,8 @@ export const getDashboards = createAsyncThunk(
 export const getDashboard = createAsyncThunk(
 	"dashboard/getDashboard",
 	async (dashboardId: string) => {
-		const dashboard: IDashboard = await new HttpClient().get(`/dashboard/${dashboardId}`);
+		console.log(dashboardId);
+		const dashboard: IDashboard = await new HttpClient().get(`/dashboard/${ dashboardId }`);
 		return dashboard;
 	}
 );
