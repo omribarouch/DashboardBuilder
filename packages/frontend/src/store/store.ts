@@ -4,6 +4,7 @@ import eventSchemaSlice from "./eventSchemaSlice";
 import eventSlice from "./eventSlice";
 import dashboardSlice from "./dashboardSlice";
 import { enableMapSet } from 'immer';
+import modalSlice from "./modalSlice";
 
 enableMapSet();
 
@@ -12,7 +13,8 @@ export const store = configureStore({
         auth: authSlice,
         eventSchemas: eventSchemaSlice,
         events: eventSlice,
-        dashboards: dashboardSlice
+        dashboards: dashboardSlice,
+        modal: modalSlice
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware()
 });

@@ -44,14 +44,12 @@ const LoginPage = () => {
 
                 <div className="d-flex justify-content-center gap-3 mt-3">
                   <button className="btn btn-primary btn-block"
-                          onClick={() => dispatch(login({ username, password }))}
-                  >
+                          onClick={() => dispatch(login({ username, password }))}>
                     Login
                   </button>
 
                   <button className="btn btn-primary btn-block"
-                          onClick={() => dispatch(register({ username, password }))}
-                  >
+                          onClick={() => dispatch(register({ username, password }))}>
                     Register
                   </button>
                 </div>

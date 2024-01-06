@@ -14,6 +14,9 @@ import AppLoginPage from './components/pages/login-page/LoginPage';
 import { useEffect } from "react";
 import { whoami } from "./store/authSlice";
 import AppDashboardPage from "./components/pages/layout/dashboards-page/dashboard-page/DashboardPage";
+import Modal from 'react-modal';
+
+Modal.setAppElement('#root');
 
 export default function App() {
   const loggedUser: IUser | undefined = useSelector((state: RootState) => state.auth.loggedUser);
