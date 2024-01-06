@@ -1,5 +1,5 @@
 import * as React from "react";
-import { FC, useEffect, useState } from "react";
+import { FC, useState } from "react";
 import { AppDispatch } from "../../../../../../store/store";
 import { useDispatch } from "react-redux";
 import { RJSFSchema } from "@rjsf/utils";
@@ -16,16 +16,10 @@ interface CreateDashboardModalProps {
 
 const CreateChartModal: FC<CreateDashboardModalProps> = ({ currentDashboard }) => {
 	const [eventSchema, setEventSchema] = useState<IEventSchema>(undefined);
-	const [propertiesNames, setPropertiesNames] = useState<string[]>([]);
 	const [schemaPropertyName, setSchemaPropertyName] = useState<string>(undefined);
 	const [description, setDescription] = useState<string>('');
+	const [chartType, setChartType] = useState<string>(ChartType.Bar);
 	const dispatch: AppDispatch = useDispatch();
-
-	useEffect(() => {
-		if(eventSchema) {
-			setPropertiesNames(Object.keys((eventSchema.baseSchema as RJSFSchema).properties));
-		}
-	}, [eventSchema]);
 
 	return (
 		<div className="container d-flex row gap-3">
@@ -46,7 +40,7 @@ const CreateChartModal: FC<CreateDashboardModalProps> = ({ currentDashboard }) =
 						onChange={event => setSchemaPropertyName(event.target.value)}>
 						<option key="default" value={ undefined } />
 						{
-							propertiesNames.map((schemaProperty: string, index: number) =>
+							Object.keys((eventSchema.baseSchema as RJSFSchema).properties).map((schemaProperty: string, index: number) =>
 								<option key={ `${ schemaProperty }-${ index }` }
 										value={ schemaProperty }>{ schemaProperty }</option>)
 						}
@@ -65,6 +59,21 @@ const CreateChartModal: FC<CreateDashboardModalProps> = ({ currentDashboard }) =
 					value={description}
 					onChange={(e) => setDescription(e.target.value)}
 				/>
+			</div>
+
+			<div className="form-group">
+				<label htmlFor="chartType">Chart Type</label>
+
+				<select
+					id="chartType"
+					className="form-control"
+					value={chartType}
+					onChange={event => setChartType(event.target.value)}>
+					{
+						Object.keys(ChartType).map((type: string) =>
+							<option key={type} value={ type }>{ type }</option>)
+					}
+				</select>
 			</div>
 
 			<button className="btn btn-primary btn-block"
