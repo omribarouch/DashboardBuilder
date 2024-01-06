@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { ChangeEventHandler } from 'react';
 import ReactModal from 'react-modal';
 
 interface ModalProps {
 	title: string;
 	isOpen: boolean;
-	osClose: Promise<void>;
+	osClose: ChangeEventHandler;
 	children?: any;
 }
 
@@ -15,7 +15,7 @@ const Modal = ({ title, isOpen, onClose, children }) => {
 		},
 		content: {
 			width: '50%',
-			height: '50%',
+			height: '70%',
 			margin: 'auto',
 		},
 	};

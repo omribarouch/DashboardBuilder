@@ -1,7 +1,7 @@
 import ChartType from "./chartType";
 
 interface IChart {
-    _id: string;
+    _id?: string;
     type: ChartType;
     eventSchemaId: string;
     schemaPropertyName: string;

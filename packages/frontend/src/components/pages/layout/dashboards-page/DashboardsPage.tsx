@@ -58,7 +58,7 @@ const AppDashboardsPage = () => {
 						<tbody>
 						{
 							dashboards.map((dashboardPreview: IDashboardPreview, index: number) =>
-								<tr>
+								<tr key={dashboardPreview._id}>
 									<th scope="row">{ index + 1 }</th>
 									<td>{ dashboardPreview.name }</td>
 									<td>{ dashboardPreview.description }</td>

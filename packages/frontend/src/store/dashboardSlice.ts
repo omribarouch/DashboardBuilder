@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import HttpClient from "../utils/httpClient";
 import { IDashboard, IDashboardPreview } from "../../../models/dashboard";
+import ChartType from "../models/chartType";
 
 interface DashboardState {
 	dashboardsPreviews: IDashboardPreview[];
@@ -17,7 +18,27 @@ const initialState: DashboardState = {
 const dashboardSlice = createSlice({
 	name: "dashboard",
 	initialState,
-	reducers: {},
+	reducers: {
+		createChart: (state: DashboardState, action: PayloadAction<string>) => {
+			const currentDashboard: IDashboard = state.dashboards.find(dashboard => dashboard._id === action.payload);
+			if (!currentDashboard) {
+				return;
+			}
+
+			currentDashboard.charts.push({
+				x: Infinity,
+				y: Infinity,
+				width: 4,
+				height: 4,
+				type: ChartType.Bar,
+				eventSchemaId: undefined,
+				schemaPropertyName: undefined
+			});
+		},
+		deleteChart: (state: DashboardState, action: PayloadAction<string>) => {
+
+		}
+	},
 	extraReducers: (builder) => {
 		builder
 			.addCase(getDashboards.pending, (state: DashboardState) => {
@@ -111,10 +132,11 @@ export const getDashboard = createAsyncThunk(
 export const saveDashboard = createAsyncThunk(
 	"dashboard/saveDashboard",
 	async (payload: IDashboard) => {
-		const updatedDashboard: IDashboard = await new HttpClient().put(`/dashboard/${payload._id}`, {
-			...payload
-		});
-		return updatedDashboard;
+		// const updatedDashboard: IDashboard = await new HttpClient().put(`/dashboard/${payload._id}`, {
+		// 	...payload
+		// });
+		console.log('saving:', payload);
+		return payload;
 	}
 );
 
@@ -125,5 +147,7 @@ export const deleteDashboard = createAsyncThunk(
 		return deletedDashboard;
 	}
 );
+
+export const { createChart, deleteChart } = dashboardSlice.actions;
 
 export default dashboardSlice.reducer;

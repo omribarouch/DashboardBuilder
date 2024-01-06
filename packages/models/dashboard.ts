@@ -1,7 +1,7 @@
 import IChart from "./chart";
 
 export interface IDashboardPreview {
-    _id: string;
+    _id?: string;
     name: string;
     description: string;
     creatorUsername: string;

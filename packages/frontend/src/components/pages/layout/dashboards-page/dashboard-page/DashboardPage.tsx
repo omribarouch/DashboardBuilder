@@ -9,12 +9,12 @@ import AppChart from './chart/Chart';
 import { AppDispatch, RootState } from "../../../../../store/store";
 import { useParams } from "react-router-dom";
 import { IDashboard } from "../../../../../models/dashboard";
-import { deleteDashboard, getDashboard, saveDashboard } from "../../../../../store/dashboardSlice";
+import { getDashboard, saveDashboard } from "../../../../../store/dashboardSlice";
 import { closeModal, openModal } from "../../../../../store/modalSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faSave, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faSave } from "@fortawesome/free-solid-svg-icons";
 import Modal from "../../../../common/modal/Modal";
-import CreateDashboardModal from "../create-dashboard-modal/CreateDashboardModal";
+import CreateChartModal from "./create-chart-modal/CreateChartModal";
 
 const ReactGridLayout = WidthProvider(RGL);
 
@@ -23,6 +23,7 @@ const AppDashboardPage = () => {
     const currentDashboard: IDashboard | undefined = useSelector((state: RootState) =>
         state.dashboards.dashboards.find(dashboard => dashboard._id === id));
     const [layout, setLayout] = useState<Layout[]>([]);
+    const isModalOpen = useSelector((state: RootState) => state.modal.isOpen);
     const dispatch: AppDispatch = useDispatch();
 
     useEffect(() => {
@@ -59,12 +60,26 @@ const AppDashboardPage = () => {
                     <div className="card-body">
                         <div className="d-flex flex-row-reverse gap-2">
                             <button className="btn btn-outline-primary rounded"
+                                    onClick={() => dispatch(openModal())}>
+                                <FontAwesomeIcon icon={faPlus} className="me-1" />
+
+                                Add Chart
+                            </button>
+
+                            <button className="btn btn-outline-primary rounded"
                                     onClick={() => dispatch(saveDashboard(currentDashboard))}>
                                 <FontAwesomeIcon icon={faSave} className="me-1" />
 
                                 Save
                             </button>
                         </div>
+
+                        <Modal
+                            isOpen={isModalOpen}
+                            onClose={() => dispatch(closeModal())}
+                            title="Create Chart">
+                            <CreateChartModal currentDashboard={currentDashboard} />
+                        </Modal>
 
                         <ReactGridLayout
                             className="layout"

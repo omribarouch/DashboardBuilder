@@ -25,6 +25,7 @@ const initialJsonSchema: RJSFSchema = {
 const initialUISchema: RJSFSchema = {};
 
 const EventSchemaCreator = () => {
+	const [name, setName] = useState<string>('');
 	const [jsonSchema, setJsonSchema] = useState<RJSFSchema>(initialJsonSchema);
 	const [uiSchema, setUISchema] = useState<RJSFSchema>(initialUISchema);
 	const [isJsonSchemaValid, setIsJsonSchemaValid] = useState(false);
@@ -38,11 +39,9 @@ const EventSchemaCreator = () => {
 							setValid: Dispatch<SetStateAction<boolean>>) => {
 		try {
 			const parsedCode = JSON.parse(jsonCode);
-			console.log('validity:', validityFn(parsedCode));
 			setValid(validityFn(parsedCode));
 			setSchema(parsedCode);
 		} catch (err) {
-			console.log('validity from error is false');
 			setValid(false);
 		}
 	};
@@ -63,6 +62,19 @@ const EventSchemaCreator = () => {
 	return (
 		<>
 			<div className='row p-2 gap-3'>
+				<div className="form-group">
+					<label htmlFor="name">Event Schema Name</label>
+
+					<input
+						type="text"
+						className="form-control"
+						id="name"
+						placeholder="Enter Schema Name"
+						value={name}
+						onChange={(e) => setName(e.target.value)}
+					/>
+				</div>
+
 				<div className='col-5 card p-0'>
 					<div className='card-header'>Create new event schema</div>
 
@@ -109,7 +121,7 @@ const EventSchemaCreator = () => {
 						className='btn btn-primary'
 						disabled={isLoading}
 						onClick={() => dispatch(createEventSchema({
-							name: 'omri',
+							name: name,
 							baseSchema: jsonSchema,
 							uiSchema: uiSchema
 						}))}>

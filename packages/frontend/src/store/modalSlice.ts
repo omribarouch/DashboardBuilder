@@ -1,6 +1,4 @@
-import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import HttpClient from "../utils/httpClient";
-import IEvent from "../../../models/event";
+import { createSlice } from "@reduxjs/toolkit";
 
 interface ModalState {
 	isOpen: boolean;
