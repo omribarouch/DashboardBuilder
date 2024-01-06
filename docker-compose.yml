@@ -4,9 +4,9 @@ services:
   frontend:
     build: packages/frontend/
     ports:
-      - "3000:3000"
+      - "3000:80"
     environment:
-      REACT_APP_BACKEND_URL: http://localhost:8080/api
+      REACT_APP_BACKEND_URL: http://backend:8080/api
 
   backend:
     build: packages/backend/
@@ -16,7 +16,8 @@ services:
       ADMIN_USER: admin
       ADMIN_PASS: pass
       SECRET_KEY: Dashboard Builder Secret
-      MONGO_URL: mongodb://127.0.0.1:27017/DashboardBuilder
+      MONGO_URL: mongodb://mongodb:27017/DashboardBuilder
+      PORT: 8080
 
   mongodb:
     image: "bitnami/mongodb:latest"

@@ -1,6 +1,6 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import HttpClient from "../utils/httpClient";
-import IEventSchema from "../../../models/eventSchema";
+import IEventSchema from "../models/eventSchema";
 import { NameValue } from "../models/nameValue";
 
 interface BreakdownObject {

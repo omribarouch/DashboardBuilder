@@ -1,6 +1,6 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import HttpClient from "../utils/httpClient";
-import IEvent from "../../../models/event";
+import IEvent from "../models/event";
 
 interface EventState {
 	isLoading: boolean;

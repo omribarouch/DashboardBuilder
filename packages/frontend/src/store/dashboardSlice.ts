@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import HttpClient from "../utils/httpClient";
-import { IDashboard, IDashboardPreview } from "../../../models/dashboard";
+import { IDashboard, IDashboardPreview } from "../models/dashboard";
 import ChartType from "../models/chartType";
 
 interface CreateChart {

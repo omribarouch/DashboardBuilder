@@ -1,5 +1,5 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import IUser from "../../../models/user";
+import IUser from "../models/user";
 import HttpClient from "../utils/httpClient";
 
 interface LoginRequest {
