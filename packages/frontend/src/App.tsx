@@ -21,7 +21,7 @@ export default function App() {
 
   useEffect(() => {
     dispatch(whoami());
-  }, []);
+  }, [dispatch]);
 
   const router: React.JSX.Element = (
     <BrowserRouter>

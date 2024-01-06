@@ -20,7 +20,7 @@ const EventCreator = () => {
 
     useEffect(() => {
         dispatch(getEventSchemas());
-    });
+    }, []);
 
     const handleSchemaChange = (event) => {
         const eventSchemaId: string = event.target.value;
@@ -33,6 +33,7 @@ const EventCreator = () => {
     };
 
     const handleFormChange = (event) => {
+        console.log(event.formData);
         setEventData({
             ...eventData,
             eventData: event.formData

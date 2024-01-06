@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts';
 import { mapToNameValue } from '../../../../../../../models/nameValue';
-import { FC, useEffect } from "react";
+import { FC } from "react";
 import { ChildChartProps } from "../Chart";
 
 const COLORS: string[] = [

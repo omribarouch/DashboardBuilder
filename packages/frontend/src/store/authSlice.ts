@@ -37,7 +37,6 @@ const authSlice = createSlice({
             })
             .addCase(login.fulfilled, (state: AuthState, action: PayloadAction<IUser>) => {
                 state.isLoading = false;
-                console.log('login fulfilled', action.payload);
                 state.loggedUser = action.payload;
             })
             .addCase(register.pending, (state: AuthState) => {
@@ -45,7 +44,6 @@ const authSlice = createSlice({
             })
             .addCase(register.fulfilled, (state: AuthState, action: PayloadAction<IUser>) => {
                 state.isLoading = false;
-                console.log('register fulfilled', action.payload);
                 state.loggedUser = action.payload;
             });
     },

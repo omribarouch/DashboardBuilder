@@ -3,14 +3,35 @@ import HttpClient from "../utils/httpClient";
 import IEventSchema from "../../../models/eventSchema";
 import { NameValue } from "../models/nameValue";
 
+interface BreakdownObject {
+	[chartId: string]: {
+		isLoading: boolean;
+		error?: string | undefined;
+		breakdownData?: NameValue[];
+	}
+}
+
+interface BreakdownRequest {
+	chartId: string;
+	eventSchemaId: string;
+	schemaPropertyName: string;
+}
+
+interface BreakdownResponse extends BreakdownRequest{
+	error?: string | undefined;
+	breakdown: NameValue[];
+}
+
 interface EventSchemaState {
 	eventSchemas: IEventSchema[];
+	breakdowns: BreakdownObject;
 	isLoading: boolean;
 	errorMessage: string | undefined;
 }
 
 const initialState: EventSchemaState = {
 	eventSchemas: [],
+	breakdowns: {},
 	isLoading: false,
 	errorMessage: undefined
 };
@@ -18,7 +39,11 @@ const initialState: EventSchemaState = {
 const eventSchemaSlice = createSlice({
 	name: "eventSchema",
 	initialState,
-	reducers: {},
+	reducers: {
+		setBreakdownLoading: (state: EventSchemaState, action: PayloadAction<string>) => {
+			state.breakdowns[action.payload] = { isLoading: true };
+		}
+	},
 	extraReducers: (builder) => {
 		builder
 			.addCase(getEventSchemas.pending, (state: EventSchemaState) => {
@@ -34,6 +59,23 @@ const eventSchemaSlice = createSlice({
 			.addCase(createEventSchema.fulfilled, (state: EventSchemaState, action: PayloadAction<any>) => {
 				state.isLoading = false;
 				state.eventSchemas.push(action.payload);
+			})
+			.addCase(getBreakdownBySchemaProperty.fulfilled, (state: EventSchemaState,
+															  action: PayloadAction<NameValue[]>) => {
+				console.log('got breakdowns:', action.payload);
+				// state.breakdowns[action.payload.chartId] = {
+				// 	isLoading: false,
+				// 	breakdownData: action.payload.breakdown
+				// };
+			})
+			.addCase(getBreakdownBySchemaProperty.rejected, (state: EventSchemaState,
+															  action) => {
+				console.log(action, action.error.message);
+				// state.breakdowns[action.payload.chartId] = {
+				// 	isLoading: false,
+				// 	error: action.error.message,
+				// 	breakdownData: []
+				// };
 			});
 	},
 });
@@ -58,7 +100,7 @@ export const getEventSchemas = createAsyncThunk(
 
 export const getBreakdownBySchemaProperty = createAsyncThunk(
 	"eventSchema/getBreakdownBySchemaProperty",
-	async (payload: { eventSchemaId: string, schemaPropertyName: string }) => {
+	async (payload: BreakdownRequest) => {
 		const breakdown: NameValue[] = await new HttpClient().get(`/event-schema/
 		${payload.eventSchemaId}/breakdown/${payload.schemaPropertyName}`);
 		return breakdown;

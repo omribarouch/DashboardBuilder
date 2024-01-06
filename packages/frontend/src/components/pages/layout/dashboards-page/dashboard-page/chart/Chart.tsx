@@ -3,13 +3,12 @@ import IChart from '../../../../../../models/chart';
 import AppBarChart from './bar-chart/BarChart'
 import AppPieChart from './pie-chart/PieChart'
 import AppErrorChart from './error-chart/ErrorChart';
-import { ResponsiveContainer } from 'recharts';
 import ChartType from "../../../../../../models/chartType";
-import { AppDispatch } from "../../../../../../store/store";
-import { useDispatch } from "react-redux";
+import { AppDispatch, RootState } from "../../../../../../store/store";
+import { useDispatch, useSelector } from "react-redux";
 import { FC, useEffect } from "react";
-import { getBreakdownBySchemaProperty } from "../../../../../../store/eventSchemaSlice";
 import { NameValue } from "../../../../../../models/nameValue";
+import { getBreakdownBySchemaProperty } from "../../../../../../store/eventSchemaSlice";
 
 export interface BaseChartProps {
    chart: IChart
@@ -25,15 +24,17 @@ const chartTypeToComponent: Map<ChartType, FC<ChildChartProps>> = new Map<ChartT
 ]);
 
 const AppChart: FC<BaseChartProps> = ({ chart }) => {
-   const breakdown: NameValue[] = [{name: 'gever', value: 5}, {name: 'yeled', value: 2}];
+   const breakdown: NameValue[] = useSelector((state: RootState) => state.eventSchemas
+       .breakdowns[chart._id]?.breakdownData);
    const dispatch: AppDispatch = useDispatch();
 
-   // useEffect(() => {
-   //    dispatch(getBreakdownBySchemaProperty({
-   //       eventSchemaId: '65987040e33797fb099bb68a',
-   //       schemaPropertyName: 'isGever'
-   //    }));
-   // }, []);
+   useEffect(() => {
+       dispatch(getBreakdownBySchemaProperty({
+           chartId: chart._id,
+           eventSchemaId: chart.eventSchemaId,
+           schemaPropertyName: chart.schemaPropertyName
+       }));
+   }, [chart]);
 
    return (
           <>

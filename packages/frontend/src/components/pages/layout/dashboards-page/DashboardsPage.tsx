@@ -15,7 +15,7 @@ const AppDashboardsPage = () => {
 
 	useEffect(() => {
 		dispatch(getDashboards());
-	}, []);
+	}, [dispatch]);
 
 	return (
 		<div className="container py-4">
