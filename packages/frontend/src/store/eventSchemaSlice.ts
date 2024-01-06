@@ -56,9 +56,16 @@ const eventSchemaSlice = createSlice({
 			.addCase(createEventSchema.pending, (state: EventSchemaState) => {
 				state.isLoading = true;
 			})
-			.addCase(createEventSchema.fulfilled, (state: EventSchemaState, action: PayloadAction<any>) => {
+			.addCase(createEventSchema.fulfilled, (state: EventSchemaState, action: PayloadAction<IEventSchema>) => {
 				state.isLoading = false;
 				state.eventSchemas.push(action.payload);
+			})
+			.addCase(getBreakdownBySchemaProperty.pending, (state: EventSchemaState) => {
+				console.log('breakdowns pending');
+				// state.breakdowns[action.payload.chartId] = {
+				// 	isLoading: false,
+				// 	breakdownData: action.payload.breakdown
+				// };
 			})
 			.addCase(getBreakdownBySchemaProperty.fulfilled, (state: EventSchemaState,
 															  action: PayloadAction<NameValue[]>) => {

@@ -25,17 +25,22 @@ const server = http.createServer(app);
 mongoose.Promise = Promise;
 mongoose.set('strictQuery', true);
 mongoose.connect(process.env.MONGO_URL).then(() => {
-  console.log("Connected to mongo db successfully!");
-  Promise.all([
-    UserModel.createCollection,
-    EventSchemaModel.createCollection,
-    EventModel.createCollection,
-    DashboardModel.createCollection
-  ])
-      .then(() => {
-        server.listen(8080, () => {
-          console.log('Server running on http://localhost:8080/');
+    console.log("Connected to mongo db successfully!");
+    Promise.all([
+        UserModel.createCollection,
+        UserModel.findOneAndUpdate({
+            username: process.env.ADMIN_USER,
+            password: process.env.ADMIN_PASS,
+            isAdmin: true}, {},
+            {upsert: true}),
+        EventSchemaModel.createCollection,
+        EventModel.createCollection,
+        DashboardModel.createCollection
+    ])
+        .then(() => {
+            server.listen(8080, () => {
+                console.log('Server running on http://localhost:8080/');
+            });
         });
-      });
 });
 mongoose.connection.on('error', (error: Error) => console.log(error));

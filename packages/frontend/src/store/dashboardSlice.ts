@@ -45,6 +45,11 @@ const dashboardSlice = createSlice({
 		},
 		deleteChart: (state: DashboardState, action: PayloadAction<string>) => {
 
+		},
+		updateDashboard: (state: DashboardState, action: PayloadAction<IDashboard>) => {
+			const currentDashboard: IDashboard = state.dashboards.find(dashboard =>
+				dashboard._id === action.payload._id);
+			currentDashboard.charts = action.payload.charts;
 		}
 	},
 	extraReducers: (builder) => {
@@ -155,6 +160,6 @@ export const deleteDashboard = createAsyncThunk(
 	}
 );
 
-export const { createChart, deleteChart } = dashboardSlice.actions;
+export const { createChart, deleteChart, updateDashboard } = dashboardSlice.actions;
 
 export default dashboardSlice.reducer;

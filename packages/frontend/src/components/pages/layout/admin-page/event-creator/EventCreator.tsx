@@ -14,6 +14,8 @@ const EventCreator = () => {
     const [eventSchema, setEventSchema] = useState<IEventSchema>(undefined);
     const [eventData, setEventData] = useState<IEvent>({ eventSchemaId: '', eventData: {} });
     const isLoading: boolean = useSelector((state: RootState) => state.events.isLoading);
+    const errorMessage: string | undefined = useSelector((state: RootState) =>
+        state.events.error);
     const dispatch: AppDispatch = useDispatch();
 
     const handleSchemaChange = (changedSchema: IEventSchema) => {
@@ -53,6 +55,10 @@ const EventCreator = () => {
                             }
                             Trigger Event
                         </button>
+                        {
+                            errorMessage &&
+                            <span className="text-danger">{ errorMessage }</span>
+                        }
                     </Form>
                 }
             </div>

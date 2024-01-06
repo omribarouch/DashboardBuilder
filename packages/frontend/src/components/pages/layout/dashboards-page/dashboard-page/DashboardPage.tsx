@@ -9,12 +9,15 @@ import AppChart from './chart/Chart';
 import { AppDispatch, RootState } from "../../../../../store/store";
 import { useParams } from "react-router-dom";
 import { IDashboard } from "../../../../../models/dashboard";
-import { getDashboard, saveDashboard } from "../../../../../store/dashboardSlice";
+import { getDashboard, saveDashboard, updateDashboard } from "../../../../../store/dashboardSlice";
 import { closeModal, openModal } from "../../../../../store/modalSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faSave } from "@fortawesome/free-solid-svg-icons";
 import Modal from "../../../../common/modal/Modal";
 import CreateChartModal from "./create-chart-modal/CreateChartModal";
+import _ from 'lodash';
+import IChart from "../../../../../models/chart";
+
 
 const ReactGridLayout = WidthProvider(RGL);
 
@@ -32,7 +35,7 @@ const AppDashboardPage = () => {
         } else {
             setLayout(currentDashboard.charts.map(chart =>
                 ({
-                    i: chart.description,
+                    i: chart._id,
                     x: chart.x,
                     y: chart.y,
                     w: chart.width,
@@ -44,6 +47,15 @@ const AppDashboardPage = () => {
 
     const onLayoutChange = (newLayout: Layout[]) => {
         setLayout(newLayout);
+        const currentDashboardCopy: IDashboard = _.cloneDeep(currentDashboard);
+        currentDashboardCopy.charts.map((chart: IChart, index: number) => ({
+            ...chart,
+            x: layout[index].x,
+            y: layout[index].y,
+            width: layout[index].w,
+            height: layout[index].h
+        }));
+        dispatch(updateDashboard(currentDashboardCopy));
     };
 
     return (
