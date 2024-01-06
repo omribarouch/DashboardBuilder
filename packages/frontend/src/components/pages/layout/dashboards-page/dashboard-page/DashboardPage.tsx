@@ -9,7 +9,7 @@ import AppChart from './chart/Chart';
 import { AppDispatch, RootState } from "../../../../../store/store";
 import { useParams } from "react-router-dom";
 import { IDashboard } from "../../../../../models/dashboard";
-import { getDashboard } from "../../../../../store/dashboardSlice";
+import { deleteDashboard, getDashboard, saveDashboard } from "../../../../../store/dashboardSlice";
 import { closeModal, openModal } from "../../../../../store/modalSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faSave, faTrash } from "@fortawesome/free-solid-svg-icons";
@@ -59,17 +59,10 @@ const AppDashboardPage = () => {
                     <div className="card-body">
                         <div className="d-flex flex-row-reverse gap-2">
                             <button className="btn btn-outline-primary rounded"
-                                    onClick={() => dispatch(openModal())}>
+                                    onClick={() => dispatch(saveDashboard(currentDashboard))}>
                                 <FontAwesomeIcon icon={faSave} className="me-1" />
 
                                 Save
-                            </button>
-
-                            <button className="btn btn-outline-danger rounded"
-                                    onClick={() => dispatch(openModal())}>
-                                <FontAwesomeIcon icon={faTrash} className="me-1" />
-
-                                Delete
                             </button>
                         </div>
 

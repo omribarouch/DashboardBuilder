@@ -2,11 +2,11 @@ import * as React from 'react';
 import { useEffect, useState } from "react";
 import { AppDispatch, RootState } from "../../../../store/store";
 import { useDispatch, useSelector } from "react-redux";
-import { getDashboards } from "../../../../store/dashboardSlice";
+import { deleteDashboard, getDashboards } from "../../../../store/dashboardSlice";
 import { IDashboardPreview } from "../../../../models/dashboard";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faExternalLink, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faExternalLink, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import Modal from "../../../common/modal/Modal";
 import CreateDashboardModal from "./create-dashboard-modal/CreateDashboardModal";
 import { closeModal, openModal } from "../../../../store/modalSlice";
@@ -64,11 +64,18 @@ const AppDashboardsPage = () => {
 									<td>{ dashboardPreview.description }</td>
 									<td>{ dashboardPreview.creatorUsername }</td>
 									<td>
-										<Link to={`/dashboard/${dashboardPreview._id}`}>
-											<button className="btn btn-outline-primary btn-sm rounded">
-												<FontAwesomeIcon icon={faExternalLink} />
+										<div className="d-flex gap-2">
+											<Link to={`/dashboard/${dashboardPreview._id}`}>
+												<button className="btn btn-outline-primary rounded">
+													<FontAwesomeIcon icon={faExternalLink} />
+												</button>
+											</Link>
+
+											<button className="btn btn-outline-danger rounded"
+													onClick={() => dispatch(deleteDashboard(dashboardPreview._id))}>
+												<FontAwesomeIcon icon={faTrash} />
 											</button>
-										</Link>
+										</div>
 									</td>
 								</tr>
 							)

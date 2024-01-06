@@ -62,6 +62,18 @@ const dashboardSlice = createSlice({
 				if (dashboardIndex >= 0) {
 					state.dashboards[previewIndex] = action.payload;
 				}
+			})
+			.addCase(deleteDashboard.pending, (state: DashboardState) => {
+				state.isLoading = true;
+			})
+			.addCase(deleteDashboard.fulfilled, (state: DashboardState,
+											   action: PayloadAction<IDashboard>) => {
+				state.isLoading = false;
+				state.dashboardsPreviews = state.dashboardsPreviews
+					.filter(dashboardPreview => dashboardPreview._id !== action.payload._id);
+
+				state.dashboards = state.dashboards.filter(dashboard =>
+					dashboard._id !== action.payload._id);
 			});
 	},
 });
@@ -103,6 +115,14 @@ export const saveDashboard = createAsyncThunk(
 			...payload
 		});
 		return updatedDashboard;
+	}
+);
+
+export const deleteDashboard = createAsyncThunk(
+	"dashboard/deleteDashboard",
+	async (dashboardId: string) => {
+		const deletedDashboard: IDashboard = await new HttpClient().delete(`/dashboard/${dashboardId}`);
+		return deletedDashboard;
 	}
 );
 
