@@ -62,14 +62,14 @@ const AppDashboardPage = () => {
         <>
             {
                 currentDashboard &&
-                <div className="container p-0">
+                <div className="container">
                     <div className="card-header">
                         <h2>{ currentDashboard.name }</h2>
 
                         <small>{ currentDashboard.description }</small>
                     </div>
 
-                    <div className="alert alert-secondary" role="alert">
+                    <div className="mt-2 alert alert-secondary" role="alert">
                         Remember to save your changes!
                     </div>
 
@@ -96,23 +96,25 @@ const AppDashboardPage = () => {
                         <CreateChartModal currentDashboard={currentDashboard} />
                     </Modal>
 
-                    <ReactGridLayout
-                        className="layout"
-                        layout={ layout }
-                        cols={ 8 }
-                        rowHeight={ 30 }
-                        onLayoutChange={ onLayoutChange }
-                        draggableHandle=".drag-handle">
-                        {
-                            layout.map((panel, chartIndex) => (
-                                <div key={ chartIndex }
-                                     className="panel drag-handle d-flex row p-1 m-1 border border-2 rounded"
-                                     data-grid={ panel }>
-                                    <AppChart chart={ currentDashboard.charts[chartIndex] }/>
-                                </div>
-                            ))
-                        }
-                    </ReactGridLayout>
+                    <div className="card-body">
+                        <ReactGridLayout
+                            className="layout"
+                            layout={ layout }
+                            cols={ 8 }
+                            rowHeight={ 30 }
+                            onLayoutChange={ onLayoutChange }
+                            draggableHandle=".drag-handle">
+                            {
+                                layout.map((panel, chartIndex) => (
+                                    <div key={ chartIndex }
+                                         className="panel drag-handle d-flex row p-1 m-1 border border-2 rounded"
+                                         data-grid={ panel }>
+                                        <AppChart chart={ currentDashboard.charts[chartIndex] }/>
+                                    </div>
+                                ))
+                            }
+                        </ReactGridLayout>
+                    </div>
                 </div>
             }
         </>

@@ -38,12 +38,16 @@ const AppChart: FC<BaseChartProps> = ({ chart }) => {
     return (
         <>
             {
-                isLoading ? <></> :
-                <>
-                    <div className="text-center mb-2">{ chart.description }</div>
-                    {React.createElement(chartTypeToComponent.get(chart.type),
-                        { breakdown: breakdownData })}
-                </>
+                isLoading ?
+                    <span className="spinner-border spinner-border-lg me-1"
+                          role="status"
+                          aria-hidden="true">
+                    </span> :
+                    <>
+                        <div className="text-center mb-2">{ chart.description }</div>
+                        {React.createElement(chartTypeToComponent.get(chart.type),
+                            { breakdown: breakdownData })}
+                    </>
             }
         </>
     );
