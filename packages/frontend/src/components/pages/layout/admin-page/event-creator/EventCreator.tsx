@@ -44,7 +44,7 @@ const EventCreator = () => {
                           onChange={({ formData }) => setEventData(formData)}>
                         <button
                             className='btn btn-primary'
-                            disabled={isLoading}
+                            disabled={ isLoading }
                             onClick={() => dispatch(createEvent({
                                 eventSchemaId: eventSchema._id,
                                 eventData: eventData

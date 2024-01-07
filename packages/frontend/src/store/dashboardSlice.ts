@@ -15,12 +15,14 @@ interface DashboardState {
 	dashboardsPreviews: IDashboardPreview[];
 	dashboards: IDashboard[];
 	isLoading: boolean;
+	errorMessage: string | undefined;
 }
 
 const initialState: DashboardState = {
 	dashboardsPreviews: [],
 	dashboards: [],
-	isLoading: false
+	isLoading: false,
+	errorMessage: undefined
 };
 
 const dashboardSlice = createSlice({
@@ -45,9 +47,6 @@ const dashboardSlice = createSlice({
 				type: action.payload.chartType
 			});
 		},
-		deleteChart: (state: DashboardState, action: PayloadAction<string>) => {
-
-		},
 		updateDashboard: (state: DashboardState, action: PayloadAction<IDashboard>) => {
 			const currentDashboard: IDashboard = state.dashboards.find(dashboard =>
 				dashboard._id === action.payload._id);
@@ -59,11 +58,16 @@ const dashboardSlice = createSlice({
 		builder
 			.addCase(getDashboards.pending, (state: DashboardState) => {
 				state.isLoading = true;
+				state.errorMessage = undefined;
 			})
 			.addCase(getDashboards.fulfilled, (state: DashboardState,
 											   action: PayloadAction<IDashboardPreview[]>) => {
 				state.isLoading = false;
 				state.dashboardsPreviews = action.payload;
+			})
+			.addCase(getDashboards.rejected, (state: DashboardState, action) => {
+				state.isLoading = false;
+				state.errorMessage = action.error.stack;
 			})
 			.addCase(getDashboard.pending, (state: DashboardState) => {
 				state.isLoading = true;
@@ -73,16 +77,26 @@ const dashboardSlice = createSlice({
 				state.isLoading = false;
 				state.dashboards.push(action.payload);
 			})
+			.addCase(getDashboard.rejected, (state: DashboardState, action) => {
+				state.isLoading = false;
+				state.errorMessage = action.error.stack;
+			})
 			.addCase(createDashboard.pending, (state: DashboardState) => {
 				state.isLoading = true;
+				state.errorMessage = undefined;
 			})
 			.addCase(createDashboard.fulfilled, (state: DashboardState,
 											  action: PayloadAction<IDashboardPreview>) => {
 				state.isLoading = false;
 				state.dashboardsPreviews.push(action.payload);
 			})
+			.addCase(createDashboard.rejected, (state: DashboardState, action) => {
+				state.isLoading = false;
+				state.errorMessage = action.error.stack;
+			})
 			.addCase(saveDashboard.pending, (state: DashboardState) => {
 				state.isLoading = true;
+				state.errorMessage = undefined;
 			})
 			.addCase(saveDashboard.fulfilled, (state: DashboardState,
 											   action: PayloadAction<IDashboard>) => {
@@ -100,8 +114,13 @@ const dashboardSlice = createSlice({
 					state.dashboards[previewIndex] = action.payload;
 				}
 			})
+			.addCase(saveDashboard.rejected, (state: DashboardState, action) => {
+				state.isLoading = false;
+				state.errorMessage = action.error.stack;
+			})
 			.addCase(deleteDashboard.pending, (state: DashboardState) => {
 				state.isLoading = true;
+				state.errorMessage = undefined;
 			})
 			.addCase(deleteDashboard.fulfilled, (state: DashboardState,
 											   action: PayloadAction<IDashboard>) => {
@@ -111,6 +130,10 @@ const dashboardSlice = createSlice({
 
 				state.dashboards = state.dashboards.filter(dashboard =>
 					dashboard._id !== action.payload._id);
+			})
+			.addCase(deleteDashboard.rejected, (state: DashboardState, action) => {
+				state.isLoading = false;
+				state.errorMessage = action.error.stack;
 			});
 	},
 });
@@ -163,6 +186,6 @@ export const deleteDashboard = createAsyncThunk(
 	}
 );
 
-export const { createChart, deleteChart, updateDashboard } = dashboardSlice.actions;
+export const { createChart, updateDashboard } = dashboardSlice.actions;
 
 export default dashboardSlice.reducer;

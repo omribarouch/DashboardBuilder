@@ -27,7 +27,7 @@ const eventSlice = createSlice({
 			})
 			.addCase(createEvent.rejected, (state: EventState, action) => {
 				state.isLoading = false;
-				state.error = action.error.message;
+				state.error = action.error.stack;
 			});
 	},
 });

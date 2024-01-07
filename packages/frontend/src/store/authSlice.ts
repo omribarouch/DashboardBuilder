@@ -48,7 +48,7 @@ const authSlice = createSlice({
             })
             .addCase(login.rejected, (state: AuthState, action) => {
                 state.isLoading = false;
-                state.errorMessage = action.error.message;
+                state.errorMessage = action.error.stack;
             })
             .addCase(register.pending, (state: AuthState) => {
                 state.isLoading = true;
@@ -61,7 +61,8 @@ const authSlice = createSlice({
             })
             .addCase(register.rejected, (state: AuthState, action) => {
                 state.isLoading = false;
-                state.errorMessage = action.error.message;
+                console.log('err', action.error);
+                state.errorMessage = action.error.stack;
             });
     },
 });

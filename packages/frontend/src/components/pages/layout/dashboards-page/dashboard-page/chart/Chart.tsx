@@ -35,13 +35,18 @@ const AppChart: FC<BaseChartProps> = ({ chart }) => {
         }));
     }, [chart.schemaPropertyName]);
 
-   return (
-          <>
-             <div className="text-center mb-2">{ chart.description }</div>
-             {React.createElement(chartTypeToComponent.get(chart.type),
-                 { breakdown: breakdownData })}
-          </>
-   );
+    return (
+        <>
+            {
+                isLoading ? <></> :
+                <>
+                    <div className="text-center mb-2">{ chart.description }</div>
+                    {React.createElement(chartTypeToComponent.get(chart.type),
+                        { breakdown: breakdownData })}
+                </>
+            }
+        </>
+    );
 }
 
 export default AppChart;
