@@ -1,13 +1,11 @@
 import * as React from 'react';
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { RJSFSchema } from "@rjsf/utils";
-import Form, { IChangeEvent } from "@rjsf/core";
+import Form from "@rjsf/core";
 import validator from "@rjsf/validator-ajv8";
 import { AppDispatch, RootState } from "../../../../../store/store";
 import IEventSchema from "../../../../../models/eventSchema";
 import { createEvent } from "../../../../../store/eventSlice";
-import IEvent from "../../../../../models/event";
 import EventSchemaPicker from "../../../../common/event-schema-picker/EventSchemaPicker";
 
 const EventCreator = () => {

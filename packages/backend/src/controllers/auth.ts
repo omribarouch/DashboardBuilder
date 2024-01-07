@@ -2,7 +2,6 @@ import { Request, Response } from "express";
 import { UserModel } from "../models/user";
 import IUser from "../models/interfaces/user";
 import { decodeAccessToken, setAuthCookie } from "../utils/auth";
-import { ACCESS_TOKEN_KEY } from "../../consts";
 
 export const whoami = async (req: Request, res: Response) => {
 	const loggedUser: IUser | undefined = decodeAccessToken(req);

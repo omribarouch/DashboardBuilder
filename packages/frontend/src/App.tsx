@@ -1,5 +1,4 @@
 import * as React from 'react';
-import './App.css';
 import AppLayout from './components/pages/layout/Layout';
 import AppHomePage from './components/pages/layout/home-page/HomePage';
 import AppDashboardsPage from './components/pages/layout/dashboards-page/DashboardsPage';

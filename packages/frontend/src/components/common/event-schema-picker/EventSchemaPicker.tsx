@@ -2,8 +2,7 @@ import * as React from "react";
 import IEventSchema from "../../../models/eventSchema";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../store/store";
-import { ChangeEventHandler, FC, useEffect, useState } from "react";
-import { RJSFSchema } from "@rjsf/utils";
+import { FC, useEffect, useState } from "react";
 import { getEventSchemas } from "../../../store/eventSchemaSlice";
 
 interface EventSchemaSelectProps {

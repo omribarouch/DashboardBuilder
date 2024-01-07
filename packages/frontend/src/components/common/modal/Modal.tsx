@@ -1,14 +1,14 @@
-import React, { ChangeEventHandler } from 'react';
+import React, { FC, MouseEventHandler } from 'react';
 import ReactModal from 'react-modal';
 
 interface ModalProps {
 	title: string;
 	isOpen: boolean;
-	osClose: ChangeEventHandler;
+	onClose: MouseEventHandler;
 	children?: any;
 }
 
-const Modal = ({ title, isOpen, onClose, children }) => {
+const Modal: FC<ModalProps> = ({ title, isOpen, onClose, children }) => {
 	const modalStyle = {
 		overlay: {
 			backgroundColor: 'rgba(0, 0, 0, 0.5)',

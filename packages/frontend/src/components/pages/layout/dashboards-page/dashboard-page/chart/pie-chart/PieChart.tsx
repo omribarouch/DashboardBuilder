@@ -4,18 +4,18 @@ import { FC } from "react";
 import { ChildChartProps } from "../Chart";
 
 const COLORS: string[] = [
-    '#FF0000', // Red
-    '#00FF00', // Green
-    '#0000FF', // Blue
-    '#FFFF00', // Yellow
-    '#FF00FF', // Magenta
-    '#00FFFF', // Cyan
-    '#800000', // Maroon
-    '#008000', // Olive
-    '#000080', // Navy
-    '#808080', // Gray
-    '#FFFFFF', // White
-    '#000000', // Black
+    '#FF0000',
+    '#00FF00',
+    '#0000FF',
+    '#FFFF00',
+    '#FF00FF',
+    '#00FFFF',
+    '#800000',
+    '#008000',
+    '#000080',
+    '#808080',
+    '#FFFFFF',
+    '#000000',
 ];
 
 const AppPieChart: FC<ChildChartProps> = ({ breakdown }) => {

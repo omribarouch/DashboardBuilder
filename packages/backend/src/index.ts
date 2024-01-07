@@ -11,6 +11,7 @@ import { EventSchemaModel } from "./models/eventSchema";
 import { DashboardModel } from "./models/dashboard";
 import { EventModel } from "./models/event";
 import * as process from "process";
+
 require('dotenv').config();
 
 const app = express();

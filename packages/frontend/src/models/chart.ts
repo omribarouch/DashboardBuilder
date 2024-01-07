@@ -1,15 +1,12 @@
 import ChartType from "./chartType";
+import IDisplayable from "./displayable";
 
-interface IChart {
+interface IChart extends IDisplayable {
     _id?: string;
     type: ChartType;
     eventSchemaId: string;
     schemaPropertyName: string;
     description: string;
-    x: number;
-    y: number;
-    width: number;
-    height: number;
 }
 
 export default IChart;
