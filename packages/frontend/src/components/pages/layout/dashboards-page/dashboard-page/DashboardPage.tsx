@@ -43,7 +43,7 @@ const AppDashboardPage = () => {
                 })
             ));
         }
-    }, [currentDashboard?.charts.length]);
+    }, [id, currentDashboard?.charts.length]);
 
     const onLayoutChange = (newLayout: Layout[]) => {
         setLayout(newLayout);
