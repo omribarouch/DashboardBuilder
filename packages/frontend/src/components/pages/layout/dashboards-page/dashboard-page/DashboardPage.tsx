@@ -33,9 +33,9 @@ const AppDashboardPage = () => {
         if (!currentDashboard) {
             dispatch(getDashboard(id));
         } else {
-            setLayout(currentDashboard.charts.map(chart =>
+            setLayout(currentDashboard.charts.map((chart: IChart, index: number) =>
                 ({
-                    i: chart._id,
+                    i: index.toString(),
                     x: chart.x,
                     y: chart.y,
                     w: chart.width,
@@ -43,7 +43,7 @@ const AppDashboardPage = () => {
                 })
             ));
         }
-    }, [id]);
+    }, [currentDashboard?.charts.length]);
 
     const onLayoutChange = (newLayout: Layout[]) => {
         setLayout(newLayout);
