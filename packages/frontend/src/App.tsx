@@ -15,11 +15,14 @@ import { useEffect } from "react";
 import { whoami } from "./store/authSlice";
 import AppDashboardPage from "./components/pages/layout/dashboards-page/dashboard-page/DashboardPage";
 import Modal from 'react-modal';
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 Modal.setAppElement('#root');
 
 export default function App() {
   const loggedUser: IUser | undefined = useSelector((state: RootState) => state.auth.loggedUser);
+  const isLoading: boolean = useSelector((state: RootState) => state.auth.isLoading);
   const dispatch: AppDispatch = useDispatch();
 
   useEffect(() => {
@@ -45,7 +48,8 @@ export default function App() {
 
   return (
     <>
-      { loggedUser ? router : <AppLoginPage /> }
+      { !isLoading && loggedUser ? router : <AppLoginPage /> }
+      <ToastContainer />
     </>
   );
 }

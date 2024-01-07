@@ -1,6 +1,7 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import IUser from "../models/user";
 import HttpClient from "../utils/httpClient";
+import { toast } from 'react-toastify';
 
 interface LoginRequest {
     username: string;
@@ -29,22 +30,38 @@ const authSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
+            .addCase(whoami.pending, (state: AuthState) => {
+                state.isLoading = true;
+            })
             .addCase(whoami.fulfilled, (state: AuthState, action: PayloadAction<IUser>) => {
+                state.isLoading = false;
                 state.loggedUser = action.payload;
             })
             .addCase(login.pending, (state: AuthState) => {
                 state.isLoading = true;
+                state.errorMessage = undefined;
             })
             .addCase(login.fulfilled, (state: AuthState, action: PayloadAction<IUser>) => {
                 state.isLoading = false;
                 state.loggedUser = action.payload;
+                toast.success("Logged In Successfully!");
+            })
+            .addCase(login.rejected, (state: AuthState, action) => {
+                state.isLoading = false;
+                state.errorMessage = action.error.message;
             })
             .addCase(register.pending, (state: AuthState) => {
                 state.isLoading = true;
+                state.errorMessage = undefined;
             })
             .addCase(register.fulfilled, (state: AuthState, action: PayloadAction<IUser>) => {
                 state.isLoading = false;
                 state.loggedUser = action.payload;
+                toast.success("Registered Successfully!");
+            })
+            .addCase(register.rejected, (state: AuthState, action) => {
+                state.isLoading = false;
+                state.errorMessage = action.error.message;
             });
     },
 });

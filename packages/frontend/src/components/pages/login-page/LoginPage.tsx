@@ -1,12 +1,13 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from '../../../store/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../../store/store';
 import { login, register } from '../../../store/authSlice';
 
 const LoginPage = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const errorMessage: string | undefined = useSelector((state: RootState) => state.auth.errorMessage);
   const dispatch = useDispatch<AppDispatch>();
 
   return (
@@ -41,7 +42,12 @@ const LoginPage = () => {
                       onChange={(e) => setPassword(e.target.value)}
                   />
                 </div>
-
+                {
+                    errorMessage &&
+                    <div className="text-center">
+                      <span className="text-danger">{ errorMessage }</span>
+                    </div>
+                }
                 <div className="d-flex justify-content-center gap-3 mt-3">
                   <button className="btn btn-primary btn-block"
                           onClick={() => dispatch(login({ username, password }))}>
