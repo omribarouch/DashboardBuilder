@@ -69,6 +69,10 @@ const AppDashboardPage = () => {
                         <small>{ currentDashboard.description }</small>
                     </div>
 
+                    <div className="alert alert-secondary" role="alert">
+                        Remember to save your changes!
+                    </div>
+
                     <div className="d-flex flex-row-reverse gap-2">
                         <button className="btn btn-outline-primary rounded"
                                 onClick={() => dispatch(openModal())}>
@@ -101,7 +105,7 @@ const AppDashboardPage = () => {
                         draggableHandle=".drag-handle">
                         {
                             layout.map((panel, chartIndex) => (
-                                <div key={ currentDashboard.charts[chartIndex]._id }
+                                <div key={ chartIndex }
                                      className="panel drag-handle d-flex row p-1 m-1 border border-2 rounded"
                                      data-grid={ panel }>
                                     <AppChart chart={ currentDashboard.charts[chartIndex] }/>
