@@ -49,6 +49,7 @@ const dashboardSlice = createSlice({
 		updateDashboard: (state: DashboardState, action: PayloadAction<IDashboard>) => {
 			const currentDashboard: IDashboard = state.dashboards.find(dashboard =>
 				dashboard._id === action.payload._id);
+			console.log('update dashboard', currentDashboard.charts);
 			currentDashboard.charts = action.payload.charts;
 		}
 	},
