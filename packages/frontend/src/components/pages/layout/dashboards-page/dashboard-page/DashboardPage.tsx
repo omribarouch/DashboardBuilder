@@ -50,10 +50,10 @@ const AppDashboardPage = () => {
         const currentDashboardCopy: IDashboard = _.cloneDeep(currentDashboard);
         currentDashboardCopy.charts = currentDashboard.charts.map((chart: IChart, index: number) => ({
             ...chart,
-            x: layout[index].x,
-            y: layout[index].y,
-            width: layout[index].w,
-            height: layout[index].h
+            x: newLayout[index].x,
+            y: newLayout[index].y,
+            width: newLayout[index].w,
+            height: newLayout[index].h
         }));
         dispatch(updateDashboard(currentDashboardCopy));
     };
@@ -107,7 +107,7 @@ const AppDashboardPage = () => {
                             {
                                 layout.map((panel, chartIndex) => (
                                     <div key={ chartIndex }
-                                         className="panel drag-handle d-flex row p-1 m-1 border border-2 rounded"
+                                         className="drag-handle p-4 border border-2 rounded"
                                          data-grid={ panel }>
                                         <AppChart chart={ currentDashboard.charts[chartIndex] }/>
                                     </div>

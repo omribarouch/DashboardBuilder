@@ -41,7 +41,7 @@ const dashboardSlice = createSlice({
 				x: 0,
 				y: 0,
 				width: 4,
-				height: 4,
+				height: 6,
 				eventSchemaId: action.payload.eventSchemaId,
 				schemaPropertyName: action.payload.schemaPropertyName,
 				description: action.payload.description,
@@ -49,6 +49,7 @@ const dashboardSlice = createSlice({
 			});
 		},
 		updateDashboard: (state: DashboardState, action: PayloadAction<IDashboard>) => {
+			console.log('updateDashboard', action.payload.charts);
 			const currentDashboard: IDashboard = state.dashboards.find(dashboard =>
 				dashboard._id === action.payload._id);
 			currentDashboard.charts = action.payload.charts;
