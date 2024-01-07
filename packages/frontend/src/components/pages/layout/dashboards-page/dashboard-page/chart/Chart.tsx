@@ -1,8 +1,7 @@
 import * as React from 'react';
 import IChart from '../../../../../../models/chart';
-import AppBarChart from './bar-chart/BarChart'
-import AppPieChart from './pie-chart/PieChart'
-import AppErrorChart from './error-chart/ErrorChart';
+import AppBarChart from './bar-chart/BarChart';
+import AppPieChart from './pie-chart/PieChart';
 import ChartType from "../../../../../../models/chartType";
 import { AppDispatch, RootState } from "../../../../../../store/store";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,7 +13,7 @@ export interface BaseChartProps {
    chart: IChart
 }
 
-export interface ChildChartProps extends BaseChartProps {
+export interface ChildChartProps {
    breakdown: NameValue[];
 }
 
@@ -34,12 +33,12 @@ const AppChart: FC<BaseChartProps> = ({ chart }) => {
            eventSchemaId: chart.eventSchemaId,
            schemaPropertyName: chart.schemaPropertyName
        }));
-   }, [chart]);
+   }, [chart.schemaPropertyName]);
 
    return (
           <>
              <div className="text-center mb-2">{ chart.description }</div>
-             {React.createElement(chartTypeToComponent.get(chart.type) || AppErrorChart, { chart, breakdown })}
+             {React.createElement(chartTypeToComponent.get(chart.type), { breakdown })}
           </>
    );
 }

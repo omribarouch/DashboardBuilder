@@ -3,7 +3,7 @@ import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAx
 import { FC } from "react";
 import { ChildChartProps } from "../Chart";
 
-const AppBarChart: FC<ChildChartProps> = ({ chart, breakdown }) => {
+const AppBarChart: FC<ChildChartProps> = ({ breakdown }) => {
     return (
         <ResponsiveContainer width="100%" height="100%">
             <BarChart data={ breakdown }>

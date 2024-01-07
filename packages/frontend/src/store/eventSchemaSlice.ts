@@ -60,29 +60,15 @@ const eventSchemaSlice = createSlice({
 				state.isLoading = false;
 				state.eventSchemas.push(action.payload);
 			})
-			.addCase(getBreakdownBySchemaProperty.pending, (state: EventSchemaState) => {
-				console.log('breakdowns pending');
+			.addCase(getBreakdownBySchemaProperty.pending, (state: EventSchemaState,
+															action: PayloadAction<BreakdownRequest>) => {
 				// state.breakdowns[action.payload.chartId] = {
-				// 	isLoading: false,
-				// 	breakdownData: action.payload.breakdown
+				// 	isLoading: true
 				// };
 			})
 			.addCase(getBreakdownBySchemaProperty.fulfilled, (state: EventSchemaState,
-															  action: PayloadAction<NameValue[]>) => {
-				console.log('got breakdowns:', action.payload);
-				// state.breakdowns[action.payload.chartId] = {
-				// 	isLoading: false,
-				// 	breakdownData: action.payload.breakdown
-				// };
-			})
-			.addCase(getBreakdownBySchemaProperty.rejected, (state: EventSchemaState,
-															  action) => {
-				console.log(action, action.error.message);
-				// state.breakdowns[action.payload.chartId] = {
-				// 	isLoading: false,
-				// 	error: action.error.message,
-				// 	breakdownData: []
-				// };
+															  action: PayloadAction<BreakdownObject>) => {
+				state.breakdowns = Object.assign({}, state.breakdowns, action.payload);
 			});
 	},
 });
@@ -110,7 +96,12 @@ export const getBreakdownBySchemaProperty = createAsyncThunk(
 	async (payload: BreakdownRequest) => {
 		const breakdown: NameValue[] = await new HttpClient().get(`/event-schema/
 		${payload.eventSchemaId}/breakdown/${payload.schemaPropertyName}`);
-		return breakdown;
+		const hara: BreakdownObject = {}
+		hara[payload.chartId] =  {
+			isLoading: false,
+			breakdownData: breakdown
+		}
+		return hara;
 	}
 );
 

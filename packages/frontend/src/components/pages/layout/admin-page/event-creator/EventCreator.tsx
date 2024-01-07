@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RJSFSchema } from "@rjsf/utils";
-import Form from "@rjsf/core";
+import Form, { IChangeEvent } from "@rjsf/core";
 import validator from "@rjsf/validator-ajv8";
 import { AppDispatch, RootState } from "../../../../../store/store";
 import IEventSchema from "../../../../../models/eventSchema";
@@ -12,45 +12,45 @@ import EventSchemaPicker from "../../../../common/event-schema-picker/EventSchem
 
 const EventCreator = () => {
     const [eventSchema, setEventSchema] = useState<IEventSchema>(undefined);
-    const [eventData, setEventData] = useState<IEvent>({ eventSchemaId: '', eventData: {} });
+    const [eventData, setEventData] = useState<object>({});
     const isLoading: boolean = useSelector((state: RootState) => state.events.isLoading);
     const errorMessage: string | undefined = useSelector((state: RootState) =>
         state.events.error);
     const dispatch: AppDispatch = useDispatch();
 
-    const handleSchemaChange = (changedSchema: IEventSchema) => {
+    const handleSchemaChange = (changedSchema: IEventSchema | undefined) => {
         setEventSchema(changedSchema);
-        setEventData({
-            ...eventData,
-            eventSchemaId: changedSchema._id
-        });
+        setEventData(undefined);
     };
 
-    const handleFormChange = (event) => {
-        setEventData({
-            ...eventData,
-            eventData: event.formData
-        });
-    }
-
     return (
-        <>  
+        <>
             <form>
                 <div className="form-group">
                     <EventSchemaPicker onChange={handleSchemaChange} />
                 </div>
             </form>
-            
-            <div className="container">
-                { eventSchema &&
-                    <Form schema={eventSchema.baseSchema}
-                          validator={validator}
-                          onChange={handleFormChange}>
+
+            { eventSchema &&
+                <div className="container card p-0 mt-3">
+                    <div className="card-header">
+                        <h2>Trigger Event</h2>
+                    </div>
+
+                    <Form schema={ eventSchema.baseSchema }
+                          formData={ eventData }
+                          validator={ validator }
+                          className="card-body"
+                          onChange={({ formData }) => setEventData(formData)}>
                         <button
                             className='btn btn-primary'
                             disabled={isLoading}
-                            onClick={() => dispatch(createEvent(eventData))}>
-                            { isLoading &&
+                            onClick={() => dispatch(createEvent({
+                                eventSchemaId: eventSchema._id,
+                                eventData: eventData
+                            }))}>
+                            {
+                                isLoading &&
                                 <span className="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
                             }
                             Trigger Event
@@ -60,8 +60,8 @@ const EventCreator = () => {
                             <span className="text-danger">{ errorMessage }</span>
                         }
                     </Form>
-                }
-            </div>
+                </div>
+            }
         </>
     );
 };

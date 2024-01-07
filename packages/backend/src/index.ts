@@ -40,7 +40,7 @@ mongoose.connect(process.env.MONGO_URL).then(() => {
     ])
         .then(() => {
             server.listen(process.env.PORT, () => {
-                console.log('Server running on http://localhost:8080/');
+                console.log(`Server running on http://localhost:${process.env.PORT}`);
             });
         });
 });

@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts';
-import { mapToNameValue } from '../../../../../../../models/nameValue';
 import { FC } from "react";
 import { ChildChartProps } from "../Chart";
 
@@ -19,20 +18,23 @@ const COLORS: string[] = [
     '#000000', // Black
 ];
 
-const AppPieChart: FC<ChildChartProps> = ({ chart }) => {
-    const breakdown = mapToNameValue(new Map([['gever', 1]]));
-
+const AppPieChart: FC<ChildChartProps> = ({ breakdown }) => {
     return (
         <ResponsiveContainer width="100%" height="100%">
-            <PieChart>
-                <Pie data={breakdown} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius="98%">
-                    {breakdown.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                    ))}
-                </Pie>
-                <Tooltip />
-                <Legend />
-            </PieChart>
+            {
+                breakdown &&
+                <PieChart>
+                    <Pie data={ breakdown } dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius="98%">
+                        {
+                            breakdown?.map((entry, index) => (
+                                <Cell key={`cell-${index}`} fill={COLORS[index]} />
+                            ))
+                        }
+                    </Pie>
+                    <Tooltip />
+                    <Legend />
+                </PieChart>
+            }
         </ResponsiveContainer>
     );
 }
