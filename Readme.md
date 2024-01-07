@@ -8,3 +8,6 @@ simply run the following command (make sure that you have docker and docker comp
 ```cmd
 docker-compose up
 ```
+
+in the `docker-compose.yml` file you'll find the admin 
+username and password which are configurable, enjoy!
