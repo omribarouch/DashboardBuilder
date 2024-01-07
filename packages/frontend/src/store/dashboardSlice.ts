@@ -7,6 +7,7 @@ interface CreateChart {
 	dashboardId: string;
 	eventSchemaId: string;
 	schemaPropertyName: string;
+	description: string;
 	chartType: ChartType;
 }
 
@@ -38,9 +39,10 @@ const dashboardSlice = createSlice({
 				y: 0,
 				width: 4,
 				height: 4,
-				type: action.payload.chartType,
 				eventSchemaId: action.payload.eventSchemaId,
-				schemaPropertyName: action.payload.schemaPropertyName
+				schemaPropertyName: action.payload.schemaPropertyName,
+				description: action.payload.description,
+				type: action.payload.chartType
 			});
 		},
 		deleteChart: (state: DashboardState, action: PayloadAction<string>) => {

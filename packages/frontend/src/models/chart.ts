@@ -5,7 +5,7 @@ interface IChart {
     type: ChartType;
     eventSchemaId: string;
     schemaPropertyName: string;
-    description?: string;
+    description: string;
     x: number;
     y: number;
     width: number;

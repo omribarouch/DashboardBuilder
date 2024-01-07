@@ -18,7 +18,7 @@ const CreateChartModal: FC<CreateDashboardModalProps> = ({ currentDashboard }) =
 	const [eventSchema, setEventSchema] = useState<IEventSchema>(undefined);
 	const [schemaPropertyName, setSchemaPropertyName] = useState<string>(undefined);
 	const [description, setDescription] = useState<string>('');
-	const [chartType, setChartType] = useState<string>(ChartType.Bar);
+	const [chartType, setChartType] = useState<ChartType>(ChartType.Bar);
 	const dispatch: AppDispatch = useDispatch();
 
 	return (
@@ -68,10 +68,10 @@ const CreateChartModal: FC<CreateDashboardModalProps> = ({ currentDashboard }) =
 					id="chartType"
 					className="form-control"
 					value={chartType}
-					onChange={event => setChartType(event.target.value)}>
+					onChange={event => setChartType(event.target.value as ChartType)}>
 					{
-						Object.keys(ChartType).map((type: string) =>
-							<option key={type} value={ type }>{ type }</option>)
+						Object.values(ChartType).map((type: string) =>
+							<option key={ type } value={ type }>{ type }</option>)
 					}
 				</select>
 			</div>
@@ -82,7 +82,8 @@ const CreateChartModal: FC<CreateDashboardModalProps> = ({ currentDashboard }) =
 							dashboardId: currentDashboard._id,
 							eventSchemaId: eventSchema._id,
 							schemaPropertyName: schemaPropertyName,
-							chartType: ChartType.Bar
+							description: description,
+							chartType: chartType
 						}));
 						dispatch(closeModal());
 					}}>

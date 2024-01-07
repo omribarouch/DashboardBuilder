@@ -2,11 +2,11 @@ import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import HttpClient from "../utils/httpClient";
 import IEventSchema from "../models/eventSchema";
 import { NameValue } from "../models/nameValue";
+import { toast } from "react-toastify";
 
 interface BreakdownObject {
 	[chartId: string]: {
 		isLoading: boolean;
-		error?: string | undefined;
 		breakdownData?: NameValue[];
 	}
 }
@@ -15,11 +15,6 @@ interface BreakdownRequest {
 	chartId: string;
 	eventSchemaId: string;
 	schemaPropertyName: string;
-}
-
-interface BreakdownResponse extends BreakdownRequest{
-	error?: string | undefined;
-	breakdown: NameValue[];
 }
 
 interface EventSchemaState {
@@ -39,11 +34,7 @@ const initialState: EventSchemaState = {
 const eventSchemaSlice = createSlice({
 	name: "eventSchema",
 	initialState,
-	reducers: {
-		setBreakdownLoading: (state: EventSchemaState, action: PayloadAction<string>) => {
-			state.breakdowns[action.payload] = { isLoading: true };
-		}
-	},
+	reducers: {},
 	extraReducers: (builder) => {
 		builder
 			.addCase(getEventSchemas.pending, (state: EventSchemaState) => {
@@ -59,16 +50,23 @@ const eventSchemaSlice = createSlice({
 			.addCase(createEventSchema.fulfilled, (state: EventSchemaState, action: PayloadAction<IEventSchema>) => {
 				state.isLoading = false;
 				state.eventSchemas.push(action.payload);
+				toast.success(`Event ${action.payload.name} Has Been Created Successfully!`);
 			})
-			.addCase(getBreakdownBySchemaProperty.pending, (state: EventSchemaState,
-															action: PayloadAction<BreakdownRequest>) => {
-				// state.breakdowns[action.payload.chartId] = {
-				// 	isLoading: true
-				// };
+			.addCase(createEventSchema.rejected, (state: EventSchemaState, action) => {
+				state.isLoading = false;
+				state.errorMessage = action.error.stack.toString();
+				toast.error("Error Occurred While Creating Your Event...");
 			})
 			.addCase(getBreakdownBySchemaProperty.fulfilled, (state: EventSchemaState,
 															  action: PayloadAction<BreakdownObject>) => {
 				state.breakdowns = Object.assign({}, state.breakdowns, action.payload);
+			})
+			.addCase(getBreakdownBySchemaProperty.rejected, (state: EventSchemaState,
+															 action: any) => {
+				state.breakdowns[action.payload.chartId] = {
+					isLoading: false
+				};
+				toast.error(`Error Occurred While Loading Chart: ${action.error.stack}`);
 			});
 	},
 });
@@ -94,14 +92,14 @@ export const getEventSchemas = createAsyncThunk(
 export const getBreakdownBySchemaProperty = createAsyncThunk(
 	"eventSchema/getBreakdownBySchemaProperty",
 	async (payload: BreakdownRequest) => {
-		const breakdown: NameValue[] = await new HttpClient().get(`/event-schema/
+		const breakdownResponse: NameValue[] = await new HttpClient().get(`/event-schema/
 		${payload.eventSchemaId}/breakdown/${payload.schemaPropertyName}`);
-		const hara: BreakdownObject = {}
-		hara[payload.chartId] =  {
+		const breakdown: BreakdownObject = {}
+		breakdown[payload.chartId] =  {
 			isLoading: false,
-			breakdownData: breakdown
+			breakdownData: breakdownResponse
 		}
-		return hara;
+		return breakdown;
 	}
 );
 

@@ -10,35 +10,36 @@ import { NameValue } from "../../../../../../models/nameValue";
 import { getBreakdownBySchemaProperty } from "../../../../../../store/eventSchemaSlice";
 
 export interface BaseChartProps {
-   chart: IChart
+    chart: IChart
 }
 
 export interface ChildChartProps {
-   breakdown: NameValue[];
+    breakdown: NameValue[];
 }
 
 const chartTypeToComponent: Map<ChartType, FC<ChildChartProps>> = new Map<ChartType, FC<ChildChartProps>>([
-   [ChartType.Bar, AppBarChart],
-   [ChartType.Pie, AppPieChart]
+    [ChartType.Bar, AppBarChart],
+    [ChartType.Pie, AppPieChart]
 ]);
 
 const AppChart: FC<BaseChartProps> = ({ chart }) => {
-   const breakdown: NameValue[] = useSelector((state: RootState) => state.eventSchemas
-       .breakdowns[chart._id]?.breakdownData);
-   const dispatch: AppDispatch = useDispatch();
+    const { isLoading, breakdownData } = useSelector((state: RootState) => state.eventSchemas
+        .breakdowns[chart._id] || {isLoading: true, breakdownData: []});
+    const dispatch: AppDispatch = useDispatch();
 
-   useEffect(() => {
-       dispatch(getBreakdownBySchemaProperty({
-           chartId: chart._id,
-           eventSchemaId: chart.eventSchemaId,
-           schemaPropertyName: chart.schemaPropertyName
-       }));
-   }, [chart.schemaPropertyName]);
+    useEffect(() => {
+        dispatch(getBreakdownBySchemaProperty({
+            chartId: chart._id,
+            eventSchemaId: chart.eventSchemaId,
+            schemaPropertyName: chart.schemaPropertyName
+        }));
+    }, [chart.schemaPropertyName]);
 
    return (
           <>
              <div className="text-center mb-2">{ chart.description }</div>
-             {React.createElement(chartTypeToComponent.get(chart.type), { breakdown })}
+             {React.createElement(chartTypeToComponent.get(chart.type),
+                 { breakdown: breakdownData })}
           </>
    );
 }
