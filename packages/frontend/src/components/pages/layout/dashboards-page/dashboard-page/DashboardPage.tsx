@@ -47,7 +47,6 @@ const AppDashboardPage = () => {
 
     const onLayoutChange = (newLayout: Layout[]) => {
         setLayout(newLayout);
-        console.log(newLayout);
         const currentDashboardCopy: IDashboard = _.cloneDeep(currentDashboard);
         currentDashboardCopy.charts = currentDashboard.charts.map((chart: IChart, index: number) => ({
             ...chart,

@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import HttpClient from "../utils/httpClient";
 import { IDashboard, IDashboardPreview } from "../models/dashboard";
 import ChartType from "../models/chartType";
+import { toast } from "react-toastify";
 
 interface CreateChart {
 	dashboardId: string;
@@ -50,7 +51,6 @@ const dashboardSlice = createSlice({
 		updateDashboard: (state: DashboardState, action: PayloadAction<IDashboard>) => {
 			const currentDashboard: IDashboard = state.dashboards.find(dashboard =>
 				dashboard._id === action.payload._id);
-			console.log('update dashboard', currentDashboard.charts);
 			currentDashboard.charts = action.payload.charts;
 		}
 	},
@@ -68,6 +68,7 @@ const dashboardSlice = createSlice({
 			.addCase(getDashboards.rejected, (state: DashboardState, action) => {
 				state.isLoading = false;
 				state.errorMessage = action.error.stack;
+				toast.error("Fail To Retrieve Dashboards...");
 			})
 			.addCase(getDashboard.pending, (state: DashboardState) => {
 				state.isLoading = true;
@@ -80,6 +81,7 @@ const dashboardSlice = createSlice({
 			.addCase(getDashboard.rejected, (state: DashboardState, action) => {
 				state.isLoading = false;
 				state.errorMessage = action.error.stack;
+				toast.error("Fail To Retrieve Dashboard...");
 			})
 			.addCase(createDashboard.pending, (state: DashboardState) => {
 				state.isLoading = true;
@@ -89,10 +91,12 @@ const dashboardSlice = createSlice({
 											  action: PayloadAction<IDashboardPreview>) => {
 				state.isLoading = false;
 				state.dashboardsPreviews.push(action.payload);
+				toast.success(`${action.payload.name} Has Been Created!`);
 			})
 			.addCase(createDashboard.rejected, (state: DashboardState, action) => {
 				state.isLoading = false;
 				state.errorMessage = action.error.stack;
+				toast.error("Fail To Create Dashboard...");
 			})
 			.addCase(saveDashboard.pending, (state: DashboardState) => {
 				state.isLoading = true;
@@ -113,10 +117,12 @@ const dashboardSlice = createSlice({
 				if (dashboardIndex >= 0) {
 					state.dashboards[previewIndex] = action.payload;
 				}
+				toast.success(`${action.payload.name} Has Been Saved!`);
 			})
 			.addCase(saveDashboard.rejected, (state: DashboardState, action) => {
 				state.isLoading = false;
 				state.errorMessage = action.error.stack;
+				toast.error("Fail To Save Dashboard...");
 			})
 			.addCase(deleteDashboard.pending, (state: DashboardState) => {
 				state.isLoading = true;
@@ -130,10 +136,12 @@ const dashboardSlice = createSlice({
 
 				state.dashboards = state.dashboards.filter(dashboard =>
 					dashboard._id !== action.payload._id);
+				toast.success(`${action.payload.name} Has Been Deleted!`);
 			})
 			.addCase(deleteDashboard.rejected, (state: DashboardState, action) => {
 				state.isLoading = false;
 				state.errorMessage = action.error.stack;
+				toast.error("Fail To Delete Dashboard...");
 			});
 	},
 });
@@ -149,9 +157,6 @@ export const getDashboards = createAsyncThunk(
 export const createDashboard = createAsyncThunk(
 	"dashboard/createDashboard",
 	async (payload: { name: string, description: string }) => {
-		console.log(
-			payload
-		)
 		const newDashboard: IDashboardPreview = await new HttpClient().post('/dashboard', {
 			name: payload.name,
 			description: payload.description

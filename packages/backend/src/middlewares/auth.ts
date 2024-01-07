@@ -18,7 +18,6 @@ export const isAuthenticated = async (req: Request, res: Response, next: NextFun
 
         return next();
     } catch (error) {
-        console.log(error);
         return res.sendStatus(400);
     }
 }

@@ -44,13 +44,18 @@ const eventSchemaSlice = createSlice({
 				state.isLoading = false;
 				state.eventSchemas = action.payload;
 			})
+			.addCase(getEventSchemas.rejected, (state: EventSchemaState, action) => {
+				state.isLoading = false;
+				state.errorMessage = action.error.stack;
+				toast.error("Error Occurred While Retrieving Event Schemas...");
+			})
 			.addCase(createEventSchema.pending, (state: EventSchemaState) => {
 				state.isLoading = true;
 			})
 			.addCase(createEventSchema.fulfilled, (state: EventSchemaState, action: PayloadAction<IEventSchema>) => {
 				state.isLoading = false;
 				state.eventSchemas.push(action.payload);
-				toast.success(`Event ${action.payload.name} Has Been Created Successfully!`);
+				toast.success(`Event Schema ${action.payload.name} Has Been Created!`);
 			})
 			.addCase(createEventSchema.rejected, (state: EventSchemaState, action) => {
 				state.isLoading = false;
@@ -66,7 +71,7 @@ const eventSchemaSlice = createSlice({
 				state.breakdowns[action.payload.chartId] = {
 					isLoading: false
 				};
-				toast.error(`Error Occurred While Loading Chart: ${action.error.stack}`);
+				toast.error(`Error Occurred While Loading The Dashboard...`);
 			});
 	},
 });

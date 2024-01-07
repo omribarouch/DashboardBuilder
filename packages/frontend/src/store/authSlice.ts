@@ -49,6 +49,7 @@ const authSlice = createSlice({
             .addCase(login.rejected, (state: AuthState, action) => {
                 state.isLoading = false;
                 state.errorMessage = action.error.stack;
+                toast.error("Fail To Login...");
             })
             .addCase(register.pending, (state: AuthState) => {
                 state.isLoading = true;
@@ -61,8 +62,8 @@ const authSlice = createSlice({
             })
             .addCase(register.rejected, (state: AuthState, action) => {
                 state.isLoading = false;
-                console.log('err', action.error);
                 state.errorMessage = action.error.stack;
+                toast.error("Fail To Register...");
             });
     },
 });
